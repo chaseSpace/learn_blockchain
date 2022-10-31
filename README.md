@@ -14,6 +14,8 @@
 ## End. 本仓库下的资料
 
 [区块链介绍](https://github.com/chaseSpace/learn_blockchain/blob/main/blockchain_intro.markdown)  
+[区块链产业](https://github.com/chaseSpace/learn_blockchain/blob/main/blockchain_industries.md)  
+
 [比特币介绍](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_intro.md)  
 [比特币的发展](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_development.md)  
 [比特币技术细节](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_tech_detail.md)
