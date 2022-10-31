@@ -18,5 +18,5 @@
 [比特币的发展](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_development.md)  
 [比特币技术细节](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_tech_detail.md)
 
-[以太坊介绍](https://github.com/chaseSpace/learn_blockchain/blob/master/ethereum_intro.md)
+[以太坊介绍](https://github.com/chaseSpace/learn_blockchain/blob/master/ethereum_intro.md)  
 [以太坊技术细节](https://github.com/chaseSpace/learn_blockchain/blob/main/ethereum_tech_detail.md)
