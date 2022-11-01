@@ -15,11 +15,11 @@
 ## End. 本仓库下的资料
 
 [区块链介绍](./blockchain_intro.markdown)  
-[区块链产业](https://github.com/chaseSpace/learn_blockchain/blob/main/blockchain_industries.md)  
+[区块链产业](./blockchain_industries.md)  
 
-[比特币介绍](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_intro.md)  
-[比特币的发展](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_development.md)  
-[比特币技术细节](https://github.com/chaseSpace/learn_blockchain/blob/main/bitcoin_tech_detail.md)
+[比特币介绍](./bitcoin_intro.md)  
+[比特币的发展](./bitcoin_development.md)  
+[比特币技术细节](./bitcoin_tech_detail.md)
 
-[以太坊介绍](https://github.com/chaseSpace/learn_blockchain/blob/master/ethereum_intro.md)  
-[以太坊技术细节](https://github.com/chaseSpace/learn_blockchain/blob/main/ethereum_tech_detail.md)
+[以太坊介绍](./ethereum_intro.md)  
+[以太坊技术细节](./ethereum_tech_detail.md)
