@@ -10,7 +10,8 @@
 
 
 - 书籍  
-[精通比特币-第二版](https://book.douban.com/subject/30280401/)
+[精通比特币-第二版](https://book.douban.com/subject/30280401/)  
+[区块链技术开发指南-马兆丰（2020）](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)  
 
 ## End. 本仓库下的资料
 
