@@ -1,7 +1,5 @@
 # Learn BlockChain
 
----
-
 持续更新中...
 
 ## 1. 入门
