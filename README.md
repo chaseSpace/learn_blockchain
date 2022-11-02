@@ -15,7 +15,7 @@
 
 ## End. 本仓库下的资料
 
-[区块链介绍](./blockchain_intro.markdown)  
+[区块链介绍](./blockchain_introduce.md)  
 [区块链产业](./blockchain_industries.md)  
 
 [比特币介绍](./bitcoin_intro.md)  
