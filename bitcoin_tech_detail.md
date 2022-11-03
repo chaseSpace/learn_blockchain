@@ -34,7 +34,13 @@
 
 **下图展示区块的大致组成和链接方式**
 
+图一  
 ![](./images/The-structure-of-a-Blockchain-A-block-is-composed-of-a-header-and-a-body-where-a-header.png)
+
+
+图二  
+![](./images/bitcoin_block_detail.jpg)
+
 
 ## 比特币分叉
 
