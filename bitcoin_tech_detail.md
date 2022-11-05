@@ -42,8 +42,7 @@ TODO
 
 
 图二  
-![](./images/bitcoin_block_detail.jpg)
-
+<img src="./images/bitcoin_block_detail.jpg" style="zoom: 80%">
 
 ## 比特币分叉
 
@@ -208,7 +207,7 @@ nNonce提供的4个字节已经远远不够，搜索空间转向hashMerkleRoot�
 
 **请看下图**
 
-![](./images/Transactions-input-and-output-in-blockchain.png)
+<img src="./images/Transactions-input-and-output-in-blockchain.png" style="zoom: 80%">
 
 #### 2.Coinbase
 区块体中，第一笔交易叫做Coinbase（也可称铸币交易），它也是一笔特殊交易，因为其没有input（或者说以Coinbase为input），只有output就是矿工比特币地址以及得到的比特币奖励。  

@@ -20,7 +20,8 @@
 - 授权管理类：即利用智能合约控制数据访问，如数据共享
 
 具体应用场景如下图：
-![](./images/blockchain_fin_scene.jpeg)
+
+<img src="./images/blockchain_fin_scene.jpeg" style="zoom: 70%">
 
 ## 区块链 + 数字货币
 数字货币以2008年横空出世的比特币为典型代表。代表的是一种通过p2p技术实现的电子现金系统，能够做到无需银行等中介机构就能实现点对点交易。  
