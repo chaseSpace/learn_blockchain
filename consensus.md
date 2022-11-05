@@ -46,5 +46,4 @@
 出现了4人投进攻，4人投撤离的情况。这时候叛徒可能故意给4名投进攻的将领送信表示投票进攻，而给4名投撤离的将领送信表示投撤离。这样一来在4名投进攻的
 将领看来，投票结果是5人投进攻，从而发起进攻；而在4名投撤离的将军看来则是5人投撤离。这样各支军队的一致协同就遭到了破坏。如下图
 
-<img src="./images/baizhanting_problem.jpg" style="zoom: 20%">
-
+<img src="./images/baizhanting_problem.jpg" height="300" width="400">
