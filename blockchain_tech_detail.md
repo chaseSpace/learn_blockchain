@@ -1,4 +1,4 @@
-# 区块链技术细节
+# 区块链技术细节（整理）
 
 ## 区块链分层参考模型
 <img src="./images/blockchain_layer.jpg" style="zoom: 90%">

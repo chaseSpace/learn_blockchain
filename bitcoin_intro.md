@@ -1,4 +1,4 @@
-# 比特币（Bitcoin）
+# 比特币（Bitcoin）（整理）
 
 ### 目录
 TODO
