@@ -114,17 +114,17 @@ CoinWarz 为用户提供有关可用于采矿或交易的各种加密货币的�
 这里在 https://electrum.org/#download 下载 electrum 轻钱包进行演示，笔者电脑是macOS，Windows系统请[参考此贴](https://www.jinse.com/news/blockchain/1019059.html) 。
 
 ### 1. 将钱包连接到测试网
-在mac上双击.dmg安装将app拖到应用程序目录，然后通过终端执行命令：`open -n /Applications/Electrum.app --args --testnet`
+在mac上双击.dmg安装包将app拖到应用程序目录，然后通过终端执行命令：`open -n /Applications/Electrum.app --args --testnet`
 
 <img src="./images/electrum_wallet_1.jpg" height="380" width="530">
 
 如图所示，点击下一步（名字不重要，可以命名为钱包1），选择标准钱包，下一步， 选择创建新的密语种子(助记词)，下一步，复制密语种子到你的记事本，下一步，
-粘贴密语种子通过验证，下一步，输入密码用来加密存储本地钱包（重点是助记词），即可创建钱包，然后看到下图。
+粘贴密语种子通过验证，下一步，输入密码用来加密存储本地钱包（重点是助记词），即可创建钱包，然后看到下图
 
 <img src="./images/electrum_wallet_testnet.jpg" height="380" width="730">
 
 ### 2. 获取测试网账户的比特币
-首先，通过钱包获取收款地址，点击【接收】，输入请求的金额，大于1就行，点击创建请求，选择右侧【地址】，右下角左键复制地址。
+首先，通过钱包获取收款地址，点击【接收】，输入请求的金额，大于1就行，点击创建请求，选择右侧【地址】，右下角左键复制地址
 
 <img src="./images/electrum_wallet_req.jpg" height="380" width="730">
 
@@ -132,14 +132,16 @@ CoinWarz 为用户提供有关可用于采矿或交易的各种加密货币的�
 
 <img src="./images/electrum_wallet_input_addr.jpg" height="200" width="800">
 
-不出意外的话，你就可以看到下图所示的效果，表示交易发起成功，等待网络确认。注意，这里的金额并不是由我们决定的。
+不出意外的话，你就可以看到下图所示的效果，表示交易发起成功，等待网络确认。注意，这里的金额并不是由我们决定的
 
 <img src="./images/electrum_wallet_got_coin.jpg" height="210" width="750">
 
 等几分钟后，交易确认完成，在【历史】菜单栏下可见交易记录，左下角余额从开始的红色变成绿色，红色表示未确认，
-这里显示单位是mBTC，1BTC=1000mBTC，1mBTC = 100,000 satoshi，后者是BTC最小单位。
+这里显示单位是mBTC，1BTC=1000mBTC，1mBTC = 100,000 satoshi，后者是BTC最小单位
 
 <img src="./images/electrum_wallet_tx_acked.jpg" height="410" width="750">
+
+>需要注意的是：该站点对IP进行限制，每12h仅能使用一次转账功能。
 
 ### 3. 转出比特币
 首先我们需要获取收款方地址，这里我们直接将BTC转回给原地址。右键【历史】中的交易记录，点击【查看交易】，如下图
