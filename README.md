@@ -24,7 +24,8 @@
 
 [比特币介绍](./bitcoin_intro.md)  
 [比特币的发展](./bitcoin_development.md)  
-[比特币技术细节](./bitcoin_tech_detail.md)
+[比特币技术细节](./bitcoin_tech_detail.md)  
+[比特币使用](./bitcoin_usage.md)  
 
 [以太坊介绍](./ethereum_intro.md)  
 [以太坊技术细节](./ethereum_tech_detail.md)
