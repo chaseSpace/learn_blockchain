@@ -161,3 +161,43 @@ CoinWarz 为用户提供有关可用于采矿或交易的各种加密货币的�
 其中第二笔是支付到一个无效地址，但交易仍然能被确认，通过右键该笔交易，选择【使用区块链浏览器查看】，如下图
 
 <img src="./images/electrum_wallet_invalid_tx.jpg" height="750" width="760">
+
+## 比特币的公钥、私钥、「账户」地址
+
+### 1. 安装libbitcoin-explorer工具
+[libbitcoin-explorer](https://github.com/libbitcoin/libbitcoin-explorer) 是cpp写的一款cli工具，通过它可以看到比特币中各种密钥以及交易信息再不同生命周期阶段编码的样子，对于学习和理解比特币原理有很大帮助。
+下面以macOS为例进行演示安装：
+```
+# 首先需要安装brew，这里假设你已安装
+# 1. 安装依赖库
+$ brew install autoconf automake libtool pkgconfig wget boost zeromq
+
+# 2. 下载安装脚本
+$ wget https://raw.githubusercontent.com/libbitcoin/libbitcoin-explorer/version3/install.sh && chmod +x install.sh
+
+# 3. 先设置好命令行http_proxy，过程需要下载文件
+$ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+# -- 注意raw.githubusercontent.com的域名劫持问题，如被解析到0.0.0.0或代理加速失效说明被劫持，需要修改dns，笔者使用的是114.114.114.114
+
+# 4. 创建安装主目录，然后执行脚本(安装过程大概几分钟)
+$ mkdir /Users/lei/libbitcoin-explorer
+$ ./install.sh --prefix=/Users/lei/libbitcoin-explorer/prefix --build-dir=/Users/lei/libbitcoin-explorer/build \
+--build-boost --build-zmq --disable-shared
+
+# 5. 安装完成，得到可执行文件
+$ lei@MacBook-Pro ~ % ./libbitcoin-explorer/prefix/bin/bx
+
+Usage: bx COMMAND [--help]
+
+Version: 3.7.0
+
+Info: The bx commands are:
+
+address-decode
+address-embed
+address-encode
+
+省略...
+```
+
+TODO
