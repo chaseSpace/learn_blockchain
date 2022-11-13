@@ -400,7 +400,7 @@ Signature: A对此交易订单的签名
 ## 锁定/解锁脚本
 相信看完上文的读者一定对这个脚本的具体内容是急不可耐的想要了解了，本节将对它进行完整剖析。
 ### 1. 概念解释
-锁定脚本英文叫做scriptPubKey，位于一个UTXO上，是花费这个UTXO的一把「锁」。通俗来讲，锁定脚本是交易时，由付款方创建的，内容包含了收款人的比特币地址信息。  
+锁定脚本英文叫做scriptPubKey，位于一个UTXO上，是这个UTXO的一把「锁」。通俗来讲，锁定脚本是交易时，由付款方创建的，内容包含了收款人的比特币地址信息。  
 
 解锁脚本英文叫做scriptSig，是一把能够解开一个UTXO锁定脚本的钥匙，位于一笔交易的一个输入中，每个输入都有一个解锁脚本，对应一个UTXO。解锁后方能使用UTXO中的金额。
 既然锁定脚本中包含的收款人的比特币地址信息，那么想要解锁，也就是验证下一笔交易输入的发起人是上一笔交易输入的收款人，那就需要**比特币地址信息对应的公钥和对应私钥签名**。
@@ -422,7 +422,69 @@ Signature: A对此交易订单的签名
 而P2PKH的解锁脚本格式如下：
 >\<Sig> \<PubKey>
 
+#### 2.2 P2PK
+Pay-to-public-key的缩写，是一种比P2PKH更简单的比特币交易形式。 使用这种脚本形式，公钥本身存储在锁定脚本中，
+而不是像前面的P2PKH那样的公钥哈希，这要短得多。 P2PKH是Satoshi发明的，目的是使比特币地址更短，便于使用。 
+P2PK现在最常见于coinbase交易中，由未更新为使用P2PKH的旧采矿软件生成。
+
+P2PK的锁定脚本格式如下：
+>\<Public Key A> OP_CHECKSIG
+
+P2PK的解锁脚本格式如下：
+>\<Signature from Private Key A>
+
+#### 2.3 MS
+Multiple-signature的缩写，译为多重签名交易。它允许多个公钥签署一笔交易，以实现多方共同管理资产的目的。MS交易的锁定脚本中记录了N个公钥，
+而解锁脚本中至少有M个签名验证通过才算有效交易，这也被成为M~N交易。其验证思想是在N个公钥中，有任意M个私钥进行正确签名即验证通过。
+
+MS的锁定脚本格式如下：
+>M <Public Key 1> <Public Key 2> ... \<Public Key N> N OP_CHECKMULTISIG
+
+以2\~3交易为例的锁定脚本格式如下：
+>2 \<Public Key A> \<Public Key B> \<Public Key C> 3 OP_CHECKMULTISIG
+
+以2\~3交易为例的解锁脚本格式如下：
+>OP_0 \<Signature B> \<Signature C>
+
+最终组成的交易脚本如下：
+>OP_0 \<Signature B> \<Signature C> 2 \<Public Key A> \<Public Key B> \<Public Key C> 3 OP_CHECKMULTISIG
+
+其中开头的`OP_0`其实是为了应对`OP_CHECKMULTISIG`指令的一个bug而添加的。bug内容是该指令原本应该从堆栈中弹出M+N+2个参数。例如在本例中，
+参数依次入栈，最后执行`OP_CHECKMULTISIG`时，会先弹出3，再弹出3个参数，之后弹出2，再弹出2个参数，一共是7个参数。但实际上它却弹出了M+N+3也就是8个参数，
+弹出最后一个参数时堆栈已经空了，就会报错。所以在创建解锁脚本时，会在前面随意加个参数，即`OP_0`可以改为其他。
+
+#### 2.4 P2SH
+Pay-to-script-hash缩写，是2012年引入的一种强大的交易类型，它能够简化复杂交易类型的脚本程序。以MS作对比，MS的脚本会随着N的长度增加而增加,
+这就会导致脚本变得很长，带来以下缺点：
+- 脚本过长，付款人需要为此付出更多手续费；
+- 直到这个UTXO被花费，它都会一直存在用户内存中，会占用用户过多内存空间。
+
+P2SH的解法是：
+- 将原锁定脚本进行hash，新的锁定脚本只包含旧脚本的hash值；
+- 花费这个UTXO时，解锁脚本中应包含原锁定脚本；
+- 矿工验证时，会先验证原锁定脚本的hash是否与新锁定脚本中的存储的hash值一致，再验证签名正确性。
+
+如此，利用hash算法的固定长度特点再次巧妙解决了脚本过长占用空间的问题。
+
+再次以2\~3交易为例，则原锁定脚本格式如下：
+>2 \<Public KeyA> \<Public KeyB> \<Public KeyC> 3 OP_CHECKMULTISIG
+
+P2SH的新锁定脚本为：
+>OP_HASH160 <160bits hash of OriginScript> OP_EQUAL
+
+P2SH的解锁脚本如下：
+>OP_0 \<signature B> \<signature C> OriginScript
+
+P2SH交易更重要的一个用途是可以锁定脚本的160位哈希值，然后添加一个比特币主网的前缀标识0x05，再按照base58格式编码得到一个地址，所以主网的P2SH地址都是3开头。
+
+#### 2.5 OP_RETURN
+
+TODO
+
+
+
 ---
 
 参考
-- [区块链技术开发指南-马兆丰](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
+- [《区块链技术开发指南-马兆丰》](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
+- [《精通比特币》](https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html)
