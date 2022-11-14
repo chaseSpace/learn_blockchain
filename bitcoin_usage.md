@@ -59,11 +59,12 @@ CoinWarz 为用户提供有关可用于采矿或交易的各种加密货币的�
 
 ## 查看创世区块
 
-它是指区块链加密货币的第一个区块，也叫genesis block，访问 https://www.blockchain.com/explorer/blocks/btc/0
+它是指区块链加密货币的第一个区块，英文叫做genesis block。
+通过blockchain交易所网站可以查看到[创世区块详细](https://www.blockchain.com/explorer/blocks/btc/0) ，下图截取自该网站
 
-<img src="./images/bitcoin_genesis_block.jpg" height="850" width="1100">
+<img src="./images/bitcoin_genesis_block.jpg" height="750" width="1100">
 
-在上图中可以看到一个区块的所有详细信息，如区块hash、区块高度、区块大小(285B)和区块产生时间等。
+在图中可以看到一个区块的所有详细信息，如区块hash、区块高度、区块大小(285B)和区块产生时间等。
 
 ## 比特币客户端（钱包）
 也可以叫做数字货币钱包，它可以管理你的账户私钥，主要用途是用来接收或向他人转账比特币。数字货币已经发展多年，钱包技术经过多次迭代也发展出不同的版本，
