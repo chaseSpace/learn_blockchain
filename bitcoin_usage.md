@@ -254,7 +254,7 @@ sudo 修改/etc/paths（追加bin绝对路径然后新开shell窗口生效），
 
 **私钥编码**  
 因为私钥是一位**256位整数**，**太长无法被人类记住**。因此，比特币有一种对私钥进行编码的方式，即带校验的Base58编码，而且有非压缩和压缩两种编码格式，
-也分别对应非压缩和压缩的公钥格式。**由于公钥会附在交易信息中，为了减小账本空间，所以一般使用压缩格式公钥**。
+也分别对应非压缩和压缩的公钥格式。**由于公钥会附在交易信息中，为了减小账本空间占用，所以一般使用压缩格式公钥**。
 
 下面使用上个步骤中下载的工具来生成私钥
 ```
@@ -282,6 +282,7 @@ $ lei@WilldeMacBook-Pro ~ % bx base58-encode 8082e4dac3269c6ef55a3f25e5ef0265f73
 L1c9kNdPw68cwn6WTE9wFpkYedeeQKxypGCjusYTgq4tc2oDjHJt
 ```
 最后的结果`L1c9kNdPw68cwn6WTE9wFpkYedeeQKxypGCjusYTgq4tc2oDjHJt` 就是钱包客户端中常见的私钥格式，又称为钱包导入格式（WIF: wallet import format）。
+> 使用非压缩格式的WIF是以5开头的字符串（目前已基本不使用），使用压缩格式的WIF是以K或L开头的字符串，这个字符串就是需要私密保存的**私钥地址**。
  
 ### 4. 生成公钥
 根据前述内容，我们知道比特币公钥有压缩和非压缩两种格式，对应两种格式的私钥。需要注意的是，非压缩公钥包含两部分，暂且叫做x,y（都是256位长度，共512位），
@@ -334,23 +335,19 @@ $ lei@WilldeMacBook-Pro ~ % bx base58-encode 00c6f4a45a003d829d3696228c8d26906e3
 1K8ys1NjZjL1gcc4n2KtB74fhsFxbBBDQu
 ```
 如上所述，由私钥`8082e4dac3269c6ef55a3f25e5ef0265f73e25366f8cabba74d379ca1bac4398b6` 最终生成的压缩公钥比特币地址是
-`1K8ys1NjZjL1gcc4n2KtB74fhsFxbBBDQu`，同理，使用非压缩公钥进行同样步骤会得到另一个地址，这两个地址都对应同一个私钥，都是有效的。
-上述步骤比较繁琐，我们可以通过私钥快速生成（压缩公钥对应的）比特币地址：
+`1K8ys1NjZjL1gcc4n2KtB74fhsFxbBBDQu`，同理，使用非压缩公钥执行相同步骤会得到另一个比特币地址，这两个地址都对应同一个私钥，都是有效的。
+上述步骤较为繁琐，是为了方便演示原理。实际中我们可以通过bx工具将私钥快速生成（压缩公钥对应的）比特币地址：
 ```
 $ lei@WilldeMacBook-Pro ~ % echo 82e4dac3269c6ef55a3f25e5ef0265f73e25366f8cabba74d379ca1bac4398b6 |bx ec-to-public | bx ec-to-address
 1K8ys1NjZjL1gcc4n2KtB74fhsFxbBBDQu    // 与上面的结果一致
+
+# 注意：对非压缩格式和压缩格式的公钥进行哈希计算得到的地址，都是以1开头的。因此，从地址本身并无法区分出使用的是压缩格式还是非压缩格式的公钥。
 ```
 
 ## 交易过程
 ### 1. 创建交易
-如A给B转账10BTC，首先是创建一张交易订单大致如下：
-```
-# Transaction for A->B
-amount: 10 BTC
-From: A的比特币地址
-To：B的比特币地址
-Signature: A对此交易订单的签名
-```
+如A给B转账10BTC，就如同A签署一张只付给B的支票，如果想要支票生效，支票上就必须有A的亲笔签名。同时A的账户还必须有足够使用的BTC余额。在比特币系统中，
+创建交易就是类似签署支票的一个数字化的过程，而交易的验证就是矿工验证交易签名和账户余额的过程，只要验证通过，交易就可以在某个时候被打包到区块中。
 
 ### 2. 广播交易
 合法交易会被节点发送给相连的其他节点，其他节点再执行相同步骤。几秒钟后，一笔有效交易就会以指数级的扩散速度在比特币网络中传播开来，直到所有节点都收到它。
@@ -493,8 +490,14 @@ Signature: A对此交易订单的签名
 >\<Sig> \<PubKey>
 
 #### 3.2 P2PK
-Pay-to-public-key的缩写，是一种比P2PKH更简单的比特币交易形式。 使用这种脚本形式，公钥本身存储在锁定脚本中，
-而不是像前面的P2PKH那样的公钥哈希，这要短得多。 P2PKH是Satoshi发明的，目的是使比特币地址更短，便于使用。 
+Pay-to-public-key的缩写，是一种早期使用的、比P2PKH更简单的比特币交易形式。 使用这种脚本形式，公钥本身存储在锁定脚本中，
+而不是像前面的P2PKH那样的公钥哈希，这要短得多。 P2PKH是Satoshi发明的，目的是使比特币地址更短，便于使用。但由于后来专家认为，在未来的量子计算中，
+ECDSA算法可能被破解，即存在通过公钥反推私钥的可能，那么P2PK这种公开暴露公钥的交易类型就不再安全。而SHA256则被证明是量子安全的密码算法，
+在P2PKH的设计中，公钥只在消费时暴露，所以P2PKH逐渐代替了P2PK。  
+>显然P2PKH也没有完全解决私钥可以被破解的问题。虽然用户在作为P2PKH交易的收款方时可以得到公钥哈希庇护安全，但在进行下次余额消费时，
+> 用户公钥一定会出现在交易输入的解锁脚本中，这个时候如果本次交易没有完全将账户中的BTC转走，那么剩下的BTC就存在于风险之中。也就是说，
+> **最佳做法是不要使用P2PK交易类型，也不要重用同一个比特币地址进行P2PKH交易**。
+
 P2PK现在最常见于coinbase交易中，由未更新为使用P2PKH的旧采矿软件生成。
 
 P2PK的锁定脚本格式如下：
@@ -567,3 +570,4 @@ data部分限制为80字节，通常表示hash，例如SHA256算法的输出（3
 - [《区块链技术开发指南-马兆丰》](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
 - [《精通比特币》](https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html)
 - [reference.cash](https://reference.cash/protocol/blockchain/transaction)
+- [Quantum Computing Put Your Bitcoin at Risk](https://www.linkedin.com/pulse/future-money-77-23-jan-2022-quantum-computing-put-your-arslanian)
