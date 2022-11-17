@@ -415,7 +415,8 @@ output拆开消费，比如tx1中针对我的output是1w，但我买电脑只需
 #### 1.2 基本概念
 SegWit（Segregated Witness的缩写）是一种改变区块数据存储结构的区块链扩容方案，这种方案需要95%的矿工节点进行软件升级才能完全激活。比特币核心开发人员Pieter Wiulle
 于2015年12月在Scaling Bitcoin会议上首次提出了这一想法。它于2017年5月10日在莱特币上激活，并于2017年8月24日在比特币上激活，区块高度481,824。
-它是目前比特币应对扩容比较好的解决方案，主要思想是把区块中签名信息隔离出来，实现变相扩容。
+它是目前比特币应对扩容比较好的解决方案，主要思想是把区块中签名信息隔离出来，实现变相扩容。SegWit在BIP 141~145中提出和改进。
+>BIP（Bitcoin Improvement Proposal）是比特币软件改进建议，是用于引入特征信息的比特币设计文档。
 
 所谓**Witness**（见证），在密码学指的是**签名**，其可以证明事物的真实性。而在比特币中，witness指的是交易输入中的解锁脚本（scriptSig），因为解锁脚本中存在签名信息（证明交易发起人可以使用对应UTXO）。
 而**Segregated**（隔离）指的是将解锁脚本从交易输入中分离出来，放在一个单独的数据结构中。矿工在打包交易的时候会验证这个新的数据结构的有效性，以确保交易合法。
@@ -454,29 +455,144 @@ SPV节点同样的带宽就可以下载更多的交易数据，进一步提升SP
 隔离见证采用一种软分叉的方式来升级比特币全网节点。在引入隔离见证前，交易数据结构大致有如下几个字段：
 >version, txins(交易输入数组), txouts(交易输出数组), locktime
 
-在引入隔离见证后，交易数据结构**增加**了几个字段：`marker, flag, witness`，其中marker和flag分别为固定值0x00和0x01，重点是witness字段，
+在引入隔离见证后，交易数据结构**增加**了几个字段：`marker, flag, witness`，其中marker和flag分别为固定值0x00和0x01，**重点是witness字段**，
 它是一个交易里面所有的见证数据，witness字段的数据结构如下：
 >witness=witness_field_1, witness_field_2...witness_field_n
 
-交易中每个输入都对应一个`witness_field`，是这个输入的见证数据。如果一笔交易输入是非隔离见证交易，那它的witness_field字段为空，或表示为0x00。
+每个txin都有一个`witness_field`，是这个输入的见证数据。如果一笔交易的输入是非隔离见证交易，那该输入的witness_field字段为空，或表示为0x00。
 
 **【交易ID计算方法】**  
 首先，不管是否引入隔离见证，交易ID的计算方式如下：
->txid=sha256(version+txins+txouts+locktime)
+>txid=double_sha256(version+txins+txouts+locktime), 只不过在隔离见证交易中，txin.scriptSig字段为空。
 
-引入隔离见证前后的差别在于，采用前的txins中包含了见证数据的，即包含签名的解锁脚本。而采用后的txins中的见证数据位置为空，留空而不删除正式一种向后兼容的方式。
+引入隔离见证前后的差别在于，引入前的txins中包含了见证数据的，即包含签名的解锁脚本。而引入后的txins中的见证数据（scriptSig）位置为空，留空而不删除正是一种向后兼容的方式。
 
-在隔离见证后，每条交易中除了txid外，还定义了一个新的wtxid，其计算方式如下：
->wtxid=sha256(verson+marker+flag+txins+txouts+witness+locktime)
+在隔离见证后，每笔交易中除了txid外，还定义了一个新的wtxid，其计算方式如下：
+>wtxid=double_sha256(verson+marker+flag+txins+txouts+witness+locktime)
 
-**【区块头结构变化】**  
+**【区块头结构没有变化】**  
 区块头结构没有发生任何变化，因为区块头的变化会影响区块哈希的计算，会导致硬分叉。目前的区块头仍然包含如下字段：
 >version, prev_block_hash, merkle_root, timestamp, nbits, nonce
 
-不过，在引入隔离见证后，区块结构中会多了一颗有所有交易的wtxid构成的merkle树，其生成方式与txid的merkle树完全一致。这样一来，就会多出一个
-`witness_merkle_root`的字段，理论上来说，这个字段与之前的merkle_root是同级字段，应该存放在区块头中，但这样会改变区块头结构，影响共识规则。
-所以，witness_merkle_root字段目前是存放在Coinbase交易的锁定脚本处。
+**【增加一颗witness merkle树】**  
+试想，在引入隔离见证前，解锁脚本是包含在交易ID，最终会影响区块hash的。现在把它分离出去了，如果不以某种方式进行约束，那攻击者不就可以构造大量包含无效签名的交易数据传播到网络中，达到造成网络拥堵的目的吗？
 
+想要保证witness不被修改，其实很简单。只要效仿已有的merkle树构成就行了，我们知道merkle树有一个根，其目的就是为了保证所有叶子节点不被修改，因为一旦修改任一叶子节点，
+merkle根也会改变，进而改变区块hash。隔离见证的设计中如法炮制，又构建了一颗`witness merkle`树，它是由所有交易的wtxid构成的merkle树，其生成方式与txid的merkle树完全一致。这样一来，就会多出一个
+`witness_merkle_root`的字段，那么将这个字段放在何处才能既影响区块hash的计算结果又能不影响旧的共识规则呢？直接在区块头中添加一个字段肯定是不行的，
+最简单的办法是放入某一笔交易中。所以，由矿工创建的Cinbase交易，就自然而然成了唯一的选择。最终，witness_merkle_root放在了Coinbase的交易输出的锁定脚本处。
+
+>PS：将witness_merkle_root字段放在Coinbase交易输出中是非常丑陋的设计，因为两者毫无关系。但或许是为了不影响区块结构（影响共识规则），才作出如此妥协的设计。
+
+**witness_merkle_root避免了DOS攻击**。该字段的构成包含了签名信息，如果修改签名，不会导致交易hash变化，但会导致区块hash变化（因为改变了Coinbase txout）。
+区块hash变化就可能不再满足难度规则。这样一来，攻击者就无法构造大量无效签名的交易提交到网络中，以导致网络拥堵。
+
+**【如何使用witness】**  
+在引入隔离见证后，每笔交易的输入和输出中的脚本内容和格式、以及脚本工作方式都发生了一些变化，下面进行详细说明（在这之前，读者需要了解什么是[锁定/解锁脚本](./bitcoin_usage.md#锁定脚本和解锁脚本)）。
+
+首先讲传统的P2PK交易类型，为了减小篇幅以便阅读，将内容统一放在代码块中进行说明：
+```
+# 1. P2PKH交易中的锁定/解锁脚本格式如下：
+pk_script = OP_DUP OP_HASH160 <PubKey_HASH> OP_EQUALVERIFY OP_CHECKSIG
+sig_script = <sig> <pubkey>
+
+# 2. 对P2PKH交易引入隔离见证后，脚本格式如下：
+pk_script = <version_byte> <witness_program>
+sig_script = 空
+witness = <sig> <pubkey>
+
+# 📖
+-- a.这种新的交易类型被命名为P2WPKH（pay-to-witness-pubkey-hash）；
+-- b.其中version_byte代表后跟witness_program的版本号，目前是0；增加了一个概念叫witness_program（见证程序），它本质上也是一个串字符，只不过具体格式由交易类型决定，
+在P2WPKH中它就是pubkey_hash，实际算法是ripemd160(sha256(pubkey))，hash160也是指的这个算法;
+-- c.witness是新引入的存在于交易外的字段，由它来存放之前解锁脚本的内容。
+
+# 3. 给出一个示例如下
+pk_script = "0 92a0db923b3a13eb576a40c4b35515aa30206cba" （转十六进制：0x001492a0db923b3a13eb576a40c4b35515aa30206cba，其中00和14分别对应0和空格，空格先转ASCII码再转十六进制）
+sig_script = 空
+witness.sig="3044022064f633ccfc4e937ef9e3edcaa9835ea9a98d31fbea1622c1d8a38d4e7f8f6cb602204bffef45a094de1306f99da055bd5a603a15c277a59a48f40a615aa4f7e5038001"
+witness.pubkey="03839e6035b33e37597908c83a2f992ec835b093d65790f43218cb49ffe5538903"
+
+# 📖
+-- a.可以看到，P2WPKH中的锁定脚本比P2PKH简单许多，它把堆栈指令都给去掉了
+
+# 4. 那它是怎么运行的呢？（假设引用的UTXO也是隔离见证交易）
+其实很简单，新节点会先去检查新交易中的witness字段，然后检查UTXO中的pk_script版本号后面的pubkey_hash是否和witness.pubkey的hash值匹配，
+若匹配，再使用OP_CHECKSIG指令检查签名和公钥是否有效。可以看出只是将整个脚本验证过程换一种方式进行。
+
+# 5. 如何在新节点上引用不支持隔离见证的UTXO?
+显而易见，因为witness的格式和原来的scriptSig一致，所以直接将其和pk_script拼接起来执行即可。
+
+# 6. 如何在未升级的旧节点上引用支持隔离见证的UTXO
+这类UTXO的pk_script = <version_byte> <witness_program>
+旧节点的工作方式仍然是将 sig_script 和 pk_script拼接后执行，虽然前者没变，但后者发生了变化，那执行结果是什么？先将其拼接起来看看：
+concated_script = <sig> <pubkey> <version_byte> <witness_program>
+
+# 📖
+-- a.可以发现，拼接后的完整脚本没有任何指令，只有4个字符串参数。将它们按序入栈后，最终执行结果就是栈顶的值，也就是witness_program（此处是pubkey_hash）。
+只要结果非0，软件就会认为是验证成功。
+-- b.按照上一点描述，这样岂不是任何旧节点都能消费已经支持隔离见证的UTXO？其实不然，因为支持隔离见证的这个比特币软件版本已经被全网95%以上的节点接受，
+这意味着只有剩下5%的旧节点会引用隔离见证的UTXO，由它们打包出来的区块会很快被其他节点拒绝，因为无法通过witness验证。
+```
+然后讲传统的P2SH交易类型，同样将内容放在代码块中：
+```
+# 1. P2SH交易中的锁定/解锁脚本格式如下（以2~3交易为例，即3个公钥至少2个签名）：
+redeem_script = 2 <Public KeyA> <Public KeyB> <Public KeyC> 3 OP_CHECKMULTISIG
+pk_script = OP_HASH160 <hash160 hash of redeem_script> OP_EQUAL
+sig_script = OP_0 <signature B> <signature C> <redeem_script>  
+
+# 2. 对P2SH交易引入隔离见证后，脚本格式如下：
+redeem_script = 2 <Public KeyA> <Public KeyB> <Public KeyC> 3 OP_CHECKMULTISIG  （未变化）
+pk_script = 0 <sha256 hash of redeem_script>
+sig_script = 空
+witness = OP_0 <signature B> <signature C> <redeem_script>  
+
+# 📖
+-- a.这种新的交易类型被命名为P2WSH（pay-to-witness-script-hash）；
+-- b.可以看出，这种交易把sig_script的内容转移到了witness字段存放，并且变换了pk_script的构成方式（去除指令以及修改哈希过程）
+-- c.P2WSH的pk_script使用了安全性更强的sha256算法，其输出是32Byte，包含前面的0和空格总34Byte，对比之前的P2SH是23Byte。虽然变长了，
+但提升了安全性，能够防御碰撞攻击。
+```
+理解了上述两种新的交易类型后，我们不禁还有一个疑问。那就是想要所有节点都进行升级基本是不大可能，在这种情况下未升级的A想给已升级隔离见证的B转账，该如何进行呢？  
+这就要提到又一种新的交易类型了：内嵌了P2WPKH的P2SH，下面的代码块中进行详细说明：
+```
+# 1. A尚未升级支持隔离见证，所以A发起的交易输出中的锁定脚本格式依然是旧的P2SH（暂时只考虑P2SH），但B提供的赎回脚本格式有变化，
+# 也就是说与旧P2SH相比，在这种交易类型中，由收款方提供的脚本hash收款地址的生成方式发生了一些变化，如下
+redeem_script = 0 <hash160 hash of Pubkey>  （构成发生了变化）
+pk_script = OP_HASH160 <hash160 hash of redeem_script> OP_EQUAL
+
+# 📖
+-- a.可见，锁定脚本中的20Byte hash串的生成方式变为了：hash160(<0 hash160(recipient's Pubkey)>)
+
+# 2. B如何解锁UTXO，B的解锁脚本格式和witness字段如下：
+sig_script = 0 <hash160 hash of redeem_script>  (注意这里非空，并且是赎回脚本的hash而不是公钥哈希)
+witness = <signature> <Pubkey>
+
+# 📖
+-- a.解锁过程：将sig_script和pk_script进行拼接，然后在堆栈中执行，这个执行过程仅验证公钥是否匹配。若匹配，再对witness中的签名进行验证（使用OP_CHECKMULTISIG）。
+
+```
+既然P2WPKH可以嵌入P2SH，那么P2WSH也可以嵌入P2SH，下面简单描述几个字段的构成，不再详述过程：
+```
+redeem_script = 0 <sha256 hash of <Multi-Sig-And-PubKey>>  （构成发生了变化）
+pk_script = OP_HASH160 <hash160 of redeem_script> OP_EQUAL
+sig_script = 0 <sha256 of redeem_script>
+witness = <Multi-Sig-And-PubKey>
+
+# 📖
+-- a.先执行sig_script+pk_script，再验证witness中的签名
+```
+
+综上所述，引入隔离见证后，比特币又新增了4种交易类型，分别是：
+- [P2WPKH](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wpkh)
+- [P2WSH](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wsh)
+- [内嵌P2WPKH的BIP16 P2SH](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh)
+- [内嵌P2WSH的BIP16 P2SH](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wsh-nested-in-bip16-p2sh)
+
+
+### 2. 闪电网络
+
+TODO
 
 ---
 
