@@ -405,7 +405,7 @@ $ lei@WilldeMacBook-Pro ~ % echo 82e4dac3269c6ef55a3f25e5ef0265f73e25366f8cabba7
 
 <img src="./images/bitcoin_tx_one_input.jpg" height="580" width="714">
 
-表一中的previous_output就是引用的UTXO指针，signature script就是解锁脚本，sequence是保留字段，固定为0xffffffff。表二其实就是指针构成。  
+表一中的previous_output就是引用的UTXO指针，signature script就是解锁脚本，sequence是保留字段，固定为0xffffffff。表二其实就是所引用的上一笔UTXO指针的构成（交易hash+所属输出序号）。  
 交易输入的类型有三种，分别是Standard TxIn、Spend Coinbase TxIn（花费挖矿交易输入）和Coinbase。
 
 #### 2.3 交易手续费
@@ -444,9 +444,9 @@ $ lei@WilldeMacBook-Pro ~ % echo 82e4dac3269c6ef55a3f25e5ef0265f73e25366f8cabba7
 
 
 ### 2. 什么是锁定脚本和解锁脚本
-锁定脚本英文叫做scriptPubKey，位于一个UTXO上，是这个UTXO的一把「锁」，锁定了这笔交易输出。通俗来讲，锁定脚本是交易时，由付款方创建的，内容包含了收款人的比特币地址信息。
+锁定脚本（LockingScript），也叫scriptPubKey或者Pubkey Script，位于一个UTXO上，是这个UTXO的一把「锁」，锁定了这笔交易输出。通俗来讲，锁定脚本是交易时，由付款方创建的，内容包含了收款人的比特币地址信息。
 
-解锁脚本英文叫做scriptSig，是一把能够解开一个UTXO锁定脚本的钥匙，位于一笔交易的一个输入中，每个输入都有一个解锁脚本，对应一个UTXO。解锁后方能使用UTXO中的金额。
+解锁脚本（UnlockingScript），也叫scriptSig或者Signature Script，是一把能够解开一个UTXO锁定脚本的钥匙，位于一笔交易的一个输入中，每个输入都有一个解锁脚本，对应一个UTXO。解锁后方能使用UTXO中的金额。
 既然锁定脚本中包含的收款人的比特币地址信息，那么想要解锁，也就是验证下一笔交易输入的发起人是上一笔交易输入的收款人，那就需要**比特币地址信息对应的公钥和对应私钥签名**。
 
 这两个脚本，其本质上就是由多个参数和指令组成的一个脚本而已。
@@ -476,6 +476,9 @@ $ lei@WilldeMacBook-Pro ~ % echo 82e4dac3269c6ef55a3f25e5ef0265f73e25366f8cabba7
 此时栈中剩余2个元素：pubkey, sig。
 7. **锁定**脚本中的CHECKSIG：该指令使用公钥来验证签名（签名是消费者使用自己的私钥对当前交易签名生成），签名算法是ECDSA。
 具体过程是将当前交易明细数据进行哈希计算得到交易hash，然后使用公钥解密签名得到另一个哈希，对比两个哈希是否一致，一致就入栈1，否则入栈0。
+
+笔者还找到一张P2PKH的脚本执行动态图，非常有助于理解脚本执行过程。
+<img src="./images/bitcoin_p2pkh_process.gif" >
 
 这个脚本验证的核心思想其实就是通过公钥和验签的方式来确定本次交易发起人就是上一笔UTXO交易的收款人，验证通过才有资格消费上一笔UTXO。
 
@@ -533,22 +536,26 @@ Pay-to-script-hash缩写，是2012年引入的一种强大的交易类型，它�
 - 直到这个UTXO被花费，它都会一直存在用户内存中，会占用用户过多内存空间。
 
 P2SH的解法是：
-- 将原锁定脚本进行hash，新的锁定脚本只包含旧脚本的hash值；
-- 花费这个UTXO时，解锁脚本中应包含原锁定脚本；
+- 将原锁定脚本进行hash，新的锁定脚本只包含旧脚本的hash值（如果这笔P2SH的UTXO一直不被消费，就永远不会暴露收款人的公钥信息）；
+- 花费这个UTXO时，解锁脚本中应包含原锁定脚本，也叫赎回脚本（redeem script）；
 - 矿工验证时，会先验证原锁定脚本的hash是否与新锁定脚本中的存储的hash值一致，再验证签名正确性。
 
 如此，利用hash算法的固定长度特点再次巧妙解决了脚本过长占用空间的问题。
 
-再次以2\~3交易为例，则原锁定脚本格式如下：
+再次以2\~3交易为例，则原锁定脚本RedeemScript格式如下：
 >2 \<Public KeyA> \<Public KeyB> \<Public KeyC> 3 OP_CHECKMULTISIG
 
 P2SH的新锁定脚本为：
->OP_HASH160 <160bits hash of OriginScript> OP_EQUAL
+>OP_HASH160 <hash160 hash of RedeemScript> OP_EQUAL
 
-P2SH的解锁脚本如下：
->OP_0 \<signature B> \<signature C> OriginScript
+P2SH的解锁脚本如下(比较长)：
+>OP_0 \<signature B> \<signature C> 2 \<Public KeyA> \<Public KeyB> \<Public KeyC> 3 OP_CHECKMULTISIG  
 
-P2SH交易更重要的一个用途是可以锁定脚本的160位哈希值，然后添加一个比特币主网的前缀标识0x05，再按照base58格式编码得到一个地址，所以主网的P2SH地址都是3开头。
+P2SH交易更重要的一个用途是可以锁定脚本的160位哈希值，然后添加一个比特币主网的前缀标识0x05，再按照base58格式编码得到一个地址，所以主网的P2SH地址都是3开头，测试网是2开头。
+P2SH主网地址示例`3N8MytPW2ih27LctLjn6LfLFZZb1PFSsqBr`，由RedeemScript hash生成该地址的过程参考[BIP13-P2SH地址格式](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki#specification) 。
+
+**P2SH的用途主要是多重签名地址脚本**。
+
 
 #### 3.5 OP_RETURN
 
