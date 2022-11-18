@@ -415,7 +415,7 @@ output拆开消费，比如tx1中针对我的output是1w，但我买电脑只需
 #### 1.2 基本概念
 SegWit（Segregated Witness的缩写）是一种改变区块数据存储结构的区块链扩容方案，这种方案需要95%的矿工节点进行软件升级才能完全激活。比特币核心开发人员Pieter Wiulle
 于2015年12月在Scaling Bitcoin会议上首次提出了这一想法。它于2017年5月10日在莱特币上激活，并于2017年8月24日在比特币上激活，区块高度481,824。
-它是目前比特币应对扩容比较好的解决方案，主要思想是把区块中签名信息隔离出来，实现变相扩容。SegWit在BIP 141~145中提出和改进。
+它是目前比特币应对扩容比较好的解决方案，主要思想是把区块中签名信息隔离出来，实现变相扩容。SegWit在BIP-141~145中提出和改进，在Bitcoin Core v0.13.1首次发布，读者还可参阅官方发布的[隔离见证升级指导](https://bitcoincore.org/en/2016/10/27/segwit-upgrade-guide/) 。
 >BIP（Bitcoin Improvement Proposal）是比特币软件改进建议，是用于引入特征信息的比特币设计文档。
 
 所谓**Witness**（见证），在密码学指的是**签名**，其可以证明事物的真实性。而在比特币中，witness指的是交易输入中的解锁脚本（scriptSig），因为解锁脚本中存在签名信息（证明交易发起人可以使用对应UTXO）。
@@ -429,8 +429,8 @@ SegWit（Segregated Witness的缩写）是一种改变区块数据存储结构�
 - 增加脚本版本管理：引入隔离见证后，新的脚本结构中增加版本号字段，类似于交易和区块，脚本也有了自己的版本号，使得脚本语言也可以一种向后兼容的方式来升级。
 - 优化签名算法：隔离见证降低了签名函数（CHECKSIG/CHECKMULTSIG）算法的计算复杂性。例如，一笔交易中可能有多笔输入，那么验证过程中就需要多次验证签名，
 而验签需要多次执行哈希计算，随着交易输入的增加，验证交易所需时间几乎呈指数增长。在引入隔离见证后，所需时间就呈线性增长，大大提高了效率。
-- 增加SPV节点的隐私保护：由于SPV节点并不需要验证交易的有效性，只需验证交易的存在性即可。所以SPV节点其实并不需要交易中的解锁脚本，在交易中去除了这部分信息后，
-SPV节点同样的带宽就可以下载更多的交易数据，进一步提升SPV节点的隐私性。
+- 节省SPV节点空间：由于SPV节点并不需要验证交易的有效性，只需验证交易的存在性即可。所以SPV节点其实并不需要交易中的解锁脚本，在交易中去除了这部分信息后，
+SPV节点同样的带宽就可以下载更多的交易数据，也节省了许多空间。
 - 减少交易手续费：因为解锁脚本被单独存放起来，对交易数据进行了「瘦身」。而交易费又是和交易大小挂钩的，交易数据变小了，自然手续费也就降低了。
 
 #### 1.4 隔离见证避免了交易延展性攻击
@@ -490,7 +490,7 @@ merkle根也会改变，进而改变区块hash。隔离见证的设计中如法�
 **【如何使用witness】**  
 在引入隔离见证后，每笔交易的输入和输出中的脚本内容和格式、以及脚本工作方式都发生了一些变化，下面进行详细说明（在这之前，读者需要了解什么是[锁定/解锁脚本](./bitcoin_usage.md#锁定脚本和解锁脚本)）。
 
-首先讲传统的P2PK交易类型，为了减小篇幅以便阅读，将内容统一放在代码块中进行说明：
+首先讲传统的P2PK交易类型，为了从视觉上减小篇幅以便阅读整体内容，将内容统一放在代码块中进行说明：
 ```
 # 1. P2PKH交易中的锁定/解锁脚本格式如下：
 pk_script = OP_DUP OP_HASH160 <PubKey_HASH> OP_EQUALVERIFY OP_CHECKSIG
@@ -589,6 +589,11 @@ witness = <Multi-Sig-And-PubKey>
 - [内嵌P2WPKH的BIP16 P2SH](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wpkh-nested-in-bip16-p2sh)
 - [内嵌P2WSH的BIP16 P2SH](https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#p2wsh-nested-in-bip16-p2sh)
 
+#### 1.6 带来的问题
+1. 因为隔离见证是一个软分叉更新，所以依旧有大部分节点不会更新软件。所以网络中会同时存在新旧两种类型的UTXO。即交易延展性问题仍然会持续存在。
+2. 隔离见证一定程度上降低了比特币网络的安全性，因为能够执行区块完全验证的节点数量变少了（只有升级后的节点才能进行witness验证）。
+3. 隔离见证功能不可回退，一旦回退，新的UTXO将能够被任意旧节点消费。
+4. 此功能解决了不少问题，同时也添加了不少代码，它使整个网络变得更复杂，增加了潜在的bug风险。
 
 ### 2. 闪电网络
 
@@ -599,5 +604,7 @@ TODO
 参考
 - [《区块链技术开发指南-马兆丰》](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
 - [《精通比特币》](https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html)
-- [比特币区块链哈希树(MerkleRoot)的计算方法](https://www.exchen.net/bitcoin-blockchain-merkleroot.html)
-- [Calculating merkle root and merkle proof in Bitcoin](https://ashutosh-tripathi.medium.com/calculating-merkle-root-and-proof-of-inclusion-in-bitcoin-ebd65f504af9)
+- [个人博客：比特币区块链哈希树(MerkleRoot)的计算方法](https://www.exchen.net/bitcoin-blockchain-merkleroot.html)
+- [medium文章：Calculating merkle root and merkle proof in Bitcoin](https://ashutosh-tripathi.medium.com/calculating-merkle-root-and-proof-of-inclusion-in-bitcoin-ebd65f504af9)
+- [medium文章：Segregated Witness for dummies](https://medium.com/softblocks/segregated-witness-for-dummies-d00606e8de63)
+- [比特币官方文章：Segregated Witness Wallet Development Guide](https://bitcoincore.org/en/segwit_wallet_dev/)
