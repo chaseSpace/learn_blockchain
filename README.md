@@ -13,6 +13,13 @@
 [精通比特币-第二版（2018_经典读物）](https://book.douban.com/subject/30280401/)  
 [区块链技术开发指南-马兆丰（2020_偏向技术原理&开发）](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)  
 
+## 2. 区块链开发
+
+TODO
+
+## 3. 智能合约开发
+TODO
+
 ## End. 本仓库下的资料
 
 [区块链介绍](./blockchain_introduce.md)  
@@ -31,4 +38,4 @@
 [以太坊技术细节](./ethereum_tech_detail.md)
 
 ## License
-本仓库中除标题含「整理」的原创文章，在知识共享协议CC-BY-NC-SA 4.0下发布。
+本仓库中除标题含「整理」的文章不限制转载外，其他原创文章均在知识共享协议CC-BY-NC-SA 4.0下发布。
