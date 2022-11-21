@@ -546,6 +546,7 @@ Web3.0架构图如下：
 | Approval()     | 授权事件   |
 
 #### 4.2 ERC-721标准
+
 它也是一个代币标准，在2017年提出并应用在游戏加密猫（CryptoKitties）中。基于它的代币被称为NFT，每个NFT代表不同的含义。例如在加密猫中，
 每只猫都是一个NFT，每只猫都是独特的，不可互相置换。这种读特性使得某些猫具有收藏价值，也因此收到追捧。非同质性广泛存在于我们的生活中，因此ERC-721合约必定有广泛的应用场景。
 
@@ -566,14 +567,171 @@ Web3.0架构图如下：
 | Transfer()            | 转账事件    |
 | Approval()            | 授权事件    |
 
-
 ### 5. DApp应用
+
 DApp是通过在区块链之上部署一组智能合约，然后为这些合约编写用户友好的界面，允许用户可与合约进行交互而实现的。DApp的应用场景可以包含游戏、存储、社交、金融、安全和媒体等方面。
 
+## 开发环境搭建
+
+[以太坊客户端的官方实现](https://github.com/ethereum/go-ethereum) ，因为是go语言实现，所以将go-ethereum叫做geth。  
+[以太坊官方开发文档](https://geth.ethereum.org/docs/getting-started)
+
+### 1. 安装geth
 
 
+下面以macOS为例演示以太坊项目的搭建，其他系统请参考[geth安装指导](https://geth.ethereum.org/docs/install-and-build/installing-geth) 。
+
+```
+# 0. 设置代理(根据自身情况修改)
+export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
+
+# 1. brew安装ethereum
+$ brew tap ethereum/ethereum
+
+# 2. brew安装ethereum (安装最新版：brew install ethereum -devel)
+$ brew install ethereum
+
+# 3. geth版本升级
+$ brew update
+$ brew upgrade ethereum
+
+# 4. 安装完成，查看geth版本
+lei@WilldeMacBook-Pro learn_blockchain % geth version
+Geth
+Version: 1.10.25-stable
+Architecture: arm64
+Go Version: go1.19.1
+Operating System: darwin
+GOPATH=
+GOROOT=
+```
+
+### 2. 连接主网
+
+这一步需要下载完整区块链数据，比较耗时，不演示，有兴趣的读者请自行参考github。后面演示的目的是运行智能合约，所以搭建私有链即可。
+
+### 3. 搭建单节点私有链
+
+在以太坊公链上部署智能合约、发起交易需要以太币。而通过修改配置，可以在本机搭建一套以太坊私有链，与公链完全无关，所以不用同步公链庞大数据，
+也无需购买以太币，很好的满足了智能合约开发和测试的要求，而开发好的合约也可以很容易地切换接口部署到以太坊公链上。
+
+#### 3.1 初始化创世区块
+
+**先创建测试用的data目录**
+
+```
+$ mkdir -p test_ethereum/data
+```
+data目录存放数据库和keystore目录。
+
+**创建创世区块配置文件**
+
+```
+$ vi test_ethereum/genesis.json
+```
+
+文件模板如下：
+
+```
+{
+  "config": {
+    "chainId": 1,
+    "homesteadBlock": 0,
+    "eip150Block": 0,
+    "eip155Block": 0,
+    "eip158Block": 0,
+    "byzantiumBlock": 0,
+    "constantinopleBlock": 0,
+    "petersburgBlock": 0,
+    "istanbulBlock": 0,
+    "berlinBlock": 0,
+    "londonBlock": 0
+  },
+  "alloc": {
+    "0x0000000000000000000000000000000000000001": {
+      "balance": "111111111"
+    },
+    "0x0000000000000000000000000000000000000002": {
+      "balance": "222222222"
+    }
+  },
+  "coinbase": "0x0000000000000000000000000000000000000000",
+  "difficulty": "0x20000",
+  "extraData": "",
+  "gasLimit": "0x2fefd8",
+  "nonce": "0x0000000000000042",
+  "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "timestamp": "0x00"
+}
+```
+
+其中chainId字段用于标识整个区块链，可以是任何正整数；修改nonce为随机值可以避免其他未知节点连接到你；`alloc`字段用于提前设置一些有余额的账户。
+
+**初始化创世区块**
+
+```
+$ geth -datadir test_ethereum/data init test_ethereum/genesis.json
+INFO [11-21|18:45:39.980] Maximum peer count                       ETH=50 LES=0 total=50
+INFO [11-21|18:45:39.984] Set global gas cap                       cap=50,000,000
+INFO [11-21|18:45:39.985] Allocated cache and file handles         database=/Users/lei/Desktop/Rust/learn_blockchain/test_ethereum/data/geth/chaindata cache=16.00MiB handles=16
+INFO [11-21|18:45:40.376] Opened ancient database                  database=/Users/lei/Desktop/Rust/learn_blockchain/test_ethereum/data/geth/chaindata/ancient/chain readonly=false
+INFO [11-21|18:45:40.376] Writing custom genesis block 
+INFO [11-21|18:45:40.378] Persisted trie from memory database      nodes=3 size=399.00B time="178.958µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [11-21|18:45:40.379] Successfully wrote genesis state         database=chaindata hash=6ab19c..97db44
+INFO [11-21|18:45:40.379] Allocated cache and file handles         database=/Users/lei/Desktop/Rust/learn_blockchain/test_ethereum/data/geth/lightchaindata cache=16.00MiB handles=16
+INFO [11-21|18:45:40.771] Opened ancient database                  database=/Users/lei/Desktop/Rust/learn_blockchain/test_ethereum/data/geth/lightchaindata/ancient/chain readonly=false
+INFO [11-21|18:45:40.771] Writing custom genesis block 
+INFO [11-21|18:45:40.772] Persisted trie from memory database      nodes=3 size=399.00B time="204.125µs" gcnodes=0 gcsize=0.00B gctime=0s livenodes=1 livesize=0.00B
+INFO [11-21|18:45:40.772] Successfully wrote genesis state         database=lightchaindata hash=6ab19c..97db44
+```
+
+#### 3.2 创建账户
+```
+$ geth --datadir test_ethereum/data account new
+INFO [11-21|18:50:46.284] Maximum peer count                       ETH=50 LES=0 total=50
+Your new account is locked with a password. Please give a password. Do not forget this password.
+Password: 
+Repeat password: 
+
+Your new key was generated
+
+Public address of the key:   0xbb2903B12126d4dc8Ef38230703D19a1ca6c72F1
+Path of the secret key file: test_ethereum/data/keystore/UTC--2022-11-21T10-50-50.928604000Z--bb2903b12126d4dc8ef38230703d19a1ca6c72f1
+```
+如上，连续输入两次密码，即创建一个以太坊账户，这个账户无关哪个区块链平台，都可以使用，但实际肯定是只在一个平台上使用。  
+>注意，执行命令时记得都输入`-datadir`选项，以便相关以太坊数据都存入这个路径，方便统一管理。
+
+此时路径`test_ethereum/data/keystore/`下会多出一个文件对应这个新账户，内容是JSON格式，里面存储的是经过密码加密后的私钥信息。 
 
 
+#### 3.3 运行节点，开始挖矿  
+```
+$ geth -datadir test_ethereum/data -networkid 1 -port "30303" \
+-http -http.api "admin,debug,eth,miner,net,personal,txpool,web3" -http.port "8999" -http.corsdomain "*" -nodiscover \
+-mine -miner.threads=1 -miner.etherbase 0xbb2903B12126d4dc8Ef38230703D19a1ca6c72F1
+```
+
+参数解释：
+- datadir是主数据目录，存放数据库和keystore目录
+- networkid的参数是chainID 
+- port是tcp监听端口，默认也是30303
+- http是开启http-rpc功能
+- http.api是通过http-rpc对外提供的http接口列表
+- http.port是http-rpc监听接口
+- http.corsdomain是http-rpc服务接受的跨域请求域名列表，逗号分隔或*，主要是浏览器调用需要
+- nodiscover是关闭节点发现功能
+- mine是开启挖矿
+- miner.threads是挖矿线程数
+- miner.etherbase是指定矿工奖励发放地址，这里填的是上一步骤中创建的公钥地址（这是一个必填项）
+
+若成功运行命令，就会看到控制台不停输出日志
+在后续熟悉后，可以后台形式运行此命令，即`nohup geth ... &` 。
+
+>注：geth v1.10.9-stable开始不再支持 --rpc | --rpcapi | --rpoccorsdoamin选项，而是用http替代，[点此查看细节](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.9) 。
+
+#### 3.4 进入JavaScript控制台，开始与私链交互
+TODO
 
 
 
