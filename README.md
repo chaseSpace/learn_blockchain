@@ -20,6 +20,10 @@ TODO
 ## 3. 智能合约开发
 TODO
 
+### 最新资讯  
+- [2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？【HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%】](https://www.8btc.com/article/6788632)
+
+
 ## End. 本仓库下的资料
 
 [区块链介绍](./blockchain_introduce.md)  
@@ -36,6 +40,7 @@ TODO
 
 [以太坊介绍](./ethereum_intro.md)  
 [以太坊技术细节](./ethereum_tech_detail.md)
+
 
 ## Issue
 本仓库下的md文档均由本人亲自整理或编写，总字数超过10万，其中难免出现笔误或因水平问题导致的错误，欢迎读者提出issue帮助完善本仓库，在此表示致谢！
