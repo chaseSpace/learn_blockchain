@@ -700,7 +700,7 @@ Public address of the key:   0xbb2903B12126d4dc8Ef38230703D19a1ca6c72F1
 Path of the secret key file: test_ethereum/data/keystore/UTC--2022-11-21T10-50-50.928604000Z--bb2903b12126d4dc8ef38230703d19a1ca6c72f1
 ```
 如上，连续输入两次密码，即创建一个以太坊账户，这个账户无关哪个区块链平台，都可以使用，但实际肯定是只在一个平台上使用。  
->注意，执行命令时记得都输入`-datadir`选项，以便相关以太坊数据都存入这个路径，方便统一管理。
+>注意，执行命令时记得都输入`-datadir`选项，以便相关区块链数据都存入这个路径，方便统一管理。
 
 此时路径`test_ethereum/data/keystore/`下会多出一个文件对应这个新账户，内容是JSON格式，里面存储的是经过密码加密后的私钥信息。 
 
@@ -713,20 +713,19 @@ $ geth -datadir test_ethereum/data -networkid 1 -port "30303" \
 ```
 
 参数解释：
-- datadir是主数据目录，存放数据库和keystore目录
-- networkid的参数是chainID 
-- port是tcp监听端口，默认也是30303
-- http是开启http-rpc功能
-- http.api是通过http-rpc对外提供的http接口列表
-- http.port是http-rpc监听接口
-- http.corsdomain是http-rpc服务接受的跨域请求域名列表，逗号分隔或*，主要是浏览器调用需要
-- nodiscover是关闭节点发现功能
-- mine是开启挖矿
-- miner.threads是挖矿线程数
-- miner.etherbase是指定矿工奖励发放地址，这里填的是上一步骤中创建的公钥地址（这是一个必填项）
+- -datadir是主数据目录，存放数据库和keystore目录
+- -networkid的参数是chainID 
+- -port是tcp监听端口，默认也是30303
+- -http是开启http-rpc功能
+- -http.api是通过http-rpc对外提供的http接口列表
+- -http.port是http-rpc监听接口
+- -http.corsdomain是http-rpc服务接受的跨域请求域名列表，逗号分隔或*，主要是浏览器调用需要
+- -nodiscover是关闭节点发现功能
+- -mine是开启挖矿
+- -miner.threads是挖矿线程数
+- -miner.etherbase是指定矿工奖励发放地址，这里填的是上一步骤中创建的公钥地址（这是一个必填项）
 
-若成功运行命令，就会看到控制台不停输出日志
-在后续熟悉后，可以后台形式运行此命令，即`nohup geth ... &` 。
+若成功运行命令，就会看到控制台不停输出日志，在后续熟悉后，可以后台形式运行此命令，即`nohup geth ... &` 。
 
 >注：geth v1.10.9-stable开始不再支持 --rpc | --rpcapi | --rpoccorsdoamin选项，而是用http替代，[点此查看细节](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.9) 。
 
