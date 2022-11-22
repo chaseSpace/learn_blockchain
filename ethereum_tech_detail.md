@@ -719,7 +719,7 @@ $ geth -datadir test_ethereum/data -networkid 1 -port "30303" \
 - -http是开启http-rpc功能
 - -http.api是通过http-rpc对外提供的http接口列表
 - -http.port是http-rpc监听接口
-- -http.corsdomain是http-rpc服务接受的跨域请求域名列表，逗号分隔或*，主要是浏览器调用需要
+- -http.corsdomain是http-rpc服务接受的跨域请求域名列表，逗号分隔或*，浏览器调用需要
 - -nodiscover是关闭节点发现功能
 - -mine是开启挖矿
 - -miner.threads是挖矿线程数
@@ -727,10 +727,175 @@ $ geth -datadir test_ethereum/data -networkid 1 -port "30303" \
 
 若成功运行命令，就会看到控制台不停输出日志，在后续熟悉后，可以后台形式运行此命令，即`nohup geth ... &` 。
 
->注：geth v1.10.9-stable开始不再支持 --rpc | --rpcapi | --rpoccorsdoamin选项，而是用http替代，[点此查看细节](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.9) 。
+>注：geth v1.10.9-stable开始不再支持 --rpc | --rpcapi | --rpoccorsdoamin选项，而是用-http选项替代，[点此查看细节](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.9) 。  
+> 另外，除了http-rpc，geth还支持以websocket和本地IPC的方式提供控制台连接。
 
 #### 3.4 进入JavaScript控制台，开始与私链交互
-TODO
+刚才启动的客户端程序已经在不断的刷屏输出挖矿日志，现在请打开一个新的窗口来连接到控制台：
+
+连接到控制台后，使用JSON风格的RPC接口来与后台交互，接口文档：https://geth.ethereum.org/docs/rpc/server ，支持tab键列出可选命令。
+
+
+```shell
+$ geth attach http://127.0.0.1:8999   # 在启动命令中我们设置了这个端口
+Welcome to the Geth JavaScript console!
+
+instance: Geth/v1.10.25-stable/darwin-arm64/go1.19.1
+coinbase: 0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1
+at block: 146 (Mon Nov 21 2022 19:02:23 GMT+0800 (CST))
+ datadir: /Users/lei/Desktop/Rust/learn_blockchain/test_ethereum/data
+ modules: admin:1.0 debug:1.0 eth:1.0 miner:1.0 net:1.0 personal:1.0 rpc:1.0 txpool:1.0 web3:1.0
+
+To exit, press ctrl-d or type exit
+
+
+-- 查看本节点下管理的账户
+> eth.accounts  # 现在只有一个，它也是挖矿奖励账户
+["0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1"]
+> eth.coinbase  # 挖矿奖励账户也叫coinbase
+"0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1"
+
+-- 查看账户余额
+> eth.getBalance("0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1") 
+484000000000000000000
+> eth.getBalance("0x0000000000000000000000000000000000000002") # 查看预设账户余额，这个账户没有私钥地址
+222222222
+> web3.fromWei(eth.getBalance("0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1")) # 上面的余额是wei单位，现在转换为ether单位
+604
+> web3.fromWei(eth.getBalance("0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1"), 'ether') # 上面的余额是wei单位，现在转换为ether单位，第二个参数是可选的单位参数，大小写不敏感
+604
+> web3.fromWei(eth.getBalance("0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1"), 'milliEther') # 1 ether=10^3 milliEther
+604000
+
+
+-- 在控制台内创建账户
+> personal.newAccount()
+Passphrase: 
+Repeat passphrase: 
+"0x901640a6cd1b4ac1f47d6cd93b50143e2053ef87"
+> eth.accounts
+["0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1", "0x901640a6cd1b4ac1f47d6cd93b50143e2053ef87"]
+
+-- 控制挖矿开始/结束
+> miner.stop()  # 暂停挖矿，挖矿日志暂停输出
+null
+> miner.start() # 恢复挖矿
+null
+
+-- 修改挖矿奖励地址
+> miner.setEtherbase(eth.accounts[1])
+true
+> eth.coinbase
+"0x901640a6cd1b4ac1f47d6cd93b50143e2053ef87"
+> eth.getBalance(eth.accounts[1])  # 稍等几秒执行此命令，可以看到余额增加
+10000000000000000000
+
+-- 交易
+> amount = web3.toWei(10, 'ether')
+"10000000000000000000"
+> eth.sendTransaction({from: eth.accounts[0], to:eth.accounts[1], value: amount})  # 账户每隔5min就会锁住，需要先解锁，这里要解锁的是账户0
+Error: authentication needed: password or unlock
+        at web3.js:6365:9(45)
+        at send (web3.js:5099:62(34))
+        at <eval>:1:20(16)
+
+> personal.unlockAccount(eth.accounts[0])  # 根据错误信息得知，http方式已经不可以解锁账户
+Unlock account 0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1
+Passphrase: 
+GoError: Error: account unlock with HTTP access is forbidden at web3.js:6365:9(45)
+        at github.com/ethereum/go-ethereum/internal/jsre.MakeCallback.func1 (native)
+        at <eval>:1:24(6)
+```
+
+通过查询[官网文档](https://geth.ethereum.org/docs/rpc/server) ，得到下面描述：
+> Note: By default, account unlocking is forbidden when HTTP or Websocket access is enabled (i.e. by passing --http or ws flag).
+> This is because an attacker that manages to access the node via the externally-exposed HTTP/WS port can then 
+> control the unlocked account. It is possible to force account unlock by including the --allow-insecure-unlock
+> flag but this is unsafe and not recommended except for expert users that completely understand how it can be
+> used safely. This is not a hypothetical risk: there are bots that continually scan for http-enabled Ethereum
+> nodes to attack.
+
+也就是说，由于要避免被攻击的风险，当节点启用http或ws的rpc连接方式时，就会禁用解锁账户等一些功能。如要解锁，要么在程序启动时添加`--allow-insecure-unlock`选项，要么不启用http/ws的rpc连接功能。
+如要不启用http方式，从命令中删除`-http`相关选项就可以了。下面通过第一种方式来解决这个问题：
+
+修改程序启动命令如下：
+```
+geth -datadir test_ethereum/data -networkid 1 -port "30303" \
+-http -http.api "admin,debug,eth,miner,net,personal,txpool,web3" -http.port "8999" -http.corsdomain "*" -nodiscover \
+-mine -miner.threads=1 -miner.etherbase 0xbb2903B12126d4dc8Ef38230703D19a1ca6c72F1 --allow-insecure-unlock
+```
+
+```shell
+> personal.unlockAccount(eth.accounts[0])
+Unlock account 0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1
+Passphrase: 
+true
+
+-- 发起交易
+> eth.sendTransaction({from: eth.accounts[0], to:eth.accounts[1], value: web3.toWei(0.5, "ether")})
+"0x893b7661d51504d1cf3115aede472cd0da1d1253bbf2cb74fda7d8e8896feca2"   # 返回交易ID
+> txpool.status  # 查看交易池状态
+{
+  pending: 1,  # 有一笔待处理交易
+  queued: 0
+}
+> web3.fromWei(eth.getBalance(eth.accounts[1]))  # 账户1多出0.5
+1572.5
+> web3.fromWei(eth.getBalance(eth.accounts[0]))  # 由于账户0一直在挖矿，所以数字持续变化。（如果停止挖矿，交易则不会被处理，交易池不会变化，读者可以自行测试）
+1547.499999999999853
+
+-- 查看交易和区块
+> eth.getTransaction('0x893b7661d51504d1cf3115aede472cd0da1d1253bbf2cb74fda7d8e8896feca2') # 通过交易hash查询
+{
+  accessList: [],
+  blockHash: "0x5947c6d35e138ee5087672113f34a787f188b07e618a03a17d429afdfcee945b",
+  blockNumber: 1546,
+  chainId: "0x1",
+  from: "0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1",
+  gas: 21000,
+  gasPrice: 1000000007,
+  hash: "0x893b7661d51504d1cf3115aede472cd0da1d1253bbf2cb74fda7d8e8896feca2",
+  input: "0x",
+  maxFeePerGas: 1000000014,
+  maxPriorityFeePerGas: 1000000000,
+  nonce: 0,
+  r: "0xc95616456134428dfce57c089bea0278f3764689928133ab6cd39864ba06b77f",
+  s: "0x78ff0d0fc96d61d9b1ad5fd4b495faff6a5acd3ec62d1bfd50ef5937c6d0c440",
+  to: "0x901640a6cd1b4ac1f47d6cd93b50143e2053ef87",
+  transactionIndex: 0,
+  type: "0x2",
+  v: "0x1",
+  value: 500000000000000000   # 单位wei
+}
+> eth.blockNumber # 区块总高度
+1720
+> eth.getBlock(1546)  # 传入整数则按照区块高度查询，字符串参数则按区块哈希查询
+{
+  baseFeePerGas: 7,
+  difficulty: 270965,
+  extraData: "0xd983010a19846765746888676f312e31392e318664617277696e",
+  gasLimit: 14201943,
+  gasUsed: 21000,
+  hash: "0x5947c6d35e138ee5087672113f34a787f188b07e618a03a17d429afdfcee945b",
+  logsBloom: "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+  miner: "0xbb2903b12126d4dc8ef38230703d19a1ca6c72f1",
+  mixHash: "0xcbd60217cbfa7ffd329a54365ea529f2f2f5ae5567f4265fd47b491b0f836ff3",
+  nonce: "0x4e0b74e5a30a08c3",
+  number: 1546,
+  parentHash: "0x7081b9ae5c7371296d32a82f967d8dd454f3407009826da41ca55967559110ed",
+  receiptsRoot: "0xf78dfb743fbd92ade140711c8bbc542b5e307f0ab7984eff35d751969fe57efa",
+  sha3Uncles: "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
+  size: 662,
+  stateRoot: "0xe78c411b7dc90dcba81501f0b41384cf517586986366709d92e2396bce461a04",
+  timestamp: 1669083035,
+  totalDifficulty: 299524555,
+  transactions: ["0x893b7661d51504d1cf3115aede472cd0da1d1253bbf2cb74fda7d8e8896feca2"],
+  transactionsRoot: "0xac31b232ec7cbf0de7d13ca753e500bd0e3906a9632a6e4f6940f9e3cb355ec1",
+  uncles: []
+}
+```
+
+本小节结束，更多geth控制台命令请参阅[官方文档](https://geth.ethereum.org/docs/rpc/server) 。
 
 
 
