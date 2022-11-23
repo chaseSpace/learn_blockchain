@@ -902,11 +902,11 @@ true
 
 #### 1.1 Quorum架构图
 
-<img src="./images/quorum_arch.png" height="700" width="1600">
+<img src="./images/quorum_arch.png" height="600" width="1000">
 
 ———————————————————— 【Quorum架构图1】————————————————————
 
-<img src="./images/quorum_arch2.jpeg" height="516" width="900">
+<img src="./images/quorum_arch2.jpeg" height="416" width="800">
 
 ———————————————————— 【Quorum架构图2】————————————————————
 
