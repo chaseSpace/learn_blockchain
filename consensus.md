@@ -769,8 +769,8 @@ Vlad称这种方式为「构建中修正（Correct-by-Construction）」，新�
 
 #### 5.3 FFG基本概念
 **【一、Validator（验证者）】**  
-FFG中的验证者主要负责投票产生checkpoint（下面介绍）区块。成为验证者需要先通过智能合约在系统中存入最低限度的保证金，验证者如果持续参与共识过程，
-系统会增加其保证金数额进行奖励，如果有恶意行为将被系统减少保证金以示惩罚。验证者如想要取回保证金只能通过智能合约发出销毁命令。
+FFG中的Validator主要负责投票产生checkpoint（下面介绍）区块。成为Validator需要先通过智能合约在系统中存入最低限度的保证金，Validator如果持续参与共识过程，
+系统会增加其保证金数额进行奖励，如果有恶意行为将被系统减少保证金以示惩罚。Validator如想要取回保证金只能通过智能合约发出销毁命令。
 
 **【二、Finality（最终确定性）】**  
 达到最终确定性的交易或区块都将不可逆转地上链，不存在回滚和冲突的可能。
@@ -791,19 +791,20 @@ FFG可与任一具有树形结构的区块链协议一起使用，如上图所�
 所有Validator节点在每个Epoch边界也会运行一次分叉选择原则，以确定checkpoint该构建在哪个区块之上。上图中，区块99的2个兄弟区块就是一种分叉情况，
 Validator最终选择了区块99来构建checkpoint。  
 
-**【checkpoint树分叉】**  
-由于网络延迟、攻击甚至恶意验证者节点等问题，不同Validator节点运行基础链的分叉选择结果可能不同，造成同一高度的基础链具有多个不同的checkpoint。
+**【checkpoint链分叉】**  
+由于网络延迟、攻击甚至恶意Validator节点等问题，不同Validator节点运行基础链的分叉选择结果可能不同，造成同一高度的基础链具有多个不同的checkpoint。
 如下图所示，创世区块对应一个checkpoint，此后高度是100个倍数的区块也对应一个checkpoint。Validator A节点和B节点则在同一高度发布不同的checkpoint。
-显而易见，这些checkpoint最终构成一颗checkpoint tree。
+显而易见，这些checkpoint最终构成一颗checkpoint tree，**但FFG会在这棵树中根据LMD-GHOST规则选出一条路径作为checkpoint主链**。
 
 <img src="./images/casper_checkpoint_tree.jpg" width="700">
 
-**FFG中的共识**指的就是所有Validator节点对checkpoint-tree的共识。针对checkpoint的投票验证过程，还有更多细节，限于篇幅，此处不再赘述。
+**FFG中的共识**指的就是所有Validator节点形成对checkpoint主链的共识。针对checkpoint的投票验证过程，还有更多细节，限于篇幅，此处不再赘述。
 读者如有兴趣可自行查阅 [FFG论文](https://arxiv.org/abs/1710.09437) 。
 
 #### 5.5 LMD-GHOST协议
-由上文得知，不同Validator节点在同一区块高度可能发布不同的checkpoint区块，造成checkpoint链分叉，从而形成checkpoint树。由于长程攻击，传统的最长链原则不再适用PoS算法，
+由上文得知，不同Validator节点在同一区块高度可能发布不同的checkpoint区块，造成checkpoint链分叉，从而形成checkpoint-tree。由于长程攻击，传统的最长链原则不再适用PoS算法，
 FFG引入GHOST协议来解决checkpoint的分叉。  
+
 LMD-GHOST（Latest Message Driven Greediest Heaviest Observed SubTree）作为FFG Validator节点遵循的分叉选择规则。具体来说，在每个Epoch结束后，
 Validator节点都将基于自己观察到的区块采用贪心算法选取最重（指资产权重）的子树作为主链。举例来说，在同一高度的多个区块中，
 Validator节点会投票选择其中资产权重最高的区块作为checkpoint。
