@@ -335,7 +335,7 @@ Casper FFG的研究由以太坊联合创始人Vitalik Buterin主导。最初的�
 > LMD GHOST：https://vitalik.ca/general/2018/12/05/cbc_casper.html#lmd-ghost
 
 #### 3.3 算法细节
-请参考 [共识算法—Casper共识算法](#5-Casper共识算法) 。
+请参考 [共识算法—Casper共识算法](./consensus.md#5-Casper共识算法) 。
 
 ## 激励层
 
