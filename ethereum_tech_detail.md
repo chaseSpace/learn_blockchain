@@ -602,7 +602,7 @@ DApp是通过在区块链之上部署一组智能合约，然后为这些合约�
 
 ## 开发环境搭建
 
-[以太坊客户端的官方实现](https://github.com/ethereum/go-ethereum) ，因为是go语言实现，所以将go-ethereum叫做geth。  
+[以太坊客户端的官方实现geth](https://github.com/ethereum/go-ethereum) ，因为是go语言实现，所以将go-ethereum叫做geth。另外还有一个Parity，由Rust编写。  
 [以太坊官方开发文档](https://geth.ethereum.org/docs/getting-started)
 
 ### 1. 安装geth
