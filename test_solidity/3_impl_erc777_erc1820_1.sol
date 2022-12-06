@@ -75,7 +75,7 @@ contract TestERC1820Implementer is ERC1820Implementer {
     }
 
     constructor(){
-        // 发布时
+        // 发布时模拟接口注册
         _registerInterfaceForAddress(SOMEFUNC_INTERFACE_HASH, address(this));
     }
 }
