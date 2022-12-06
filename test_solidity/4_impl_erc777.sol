@@ -19,7 +19,54 @@ pragma solidity ^0.8.0;
 - ERC777标准向后兼容ERC20，这允许与这些代币无缝交互，还增加了一些改进，所以建议开发新代币时使用ERC777
 */
 
-// ERC1820的interface定义文件
 //import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
-//// ERC1820的具体实现，开发者可以直接使用
 //import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
+//import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/IERC1820Registry.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/ERC1820Implementer.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/token/ERC777/ERC777.sol";
+
+// 直接继承ERC777模板代码，稍作修改即可
+contract MyTokenERC777 is ERC777 {
+    constructor(address[] memory defaultOperators) ERC777("MyToken777", "M7", defaultOperators) {
+        // 发行2100w个代币
+        uint initialSupply = 21000000 * 10 ** 18;
+        // 给合约地址发送全部发行量的M7代币
+        _mint(msg.sender, initialSupply, "", "");
+    }
+    // 下面对 ERC777 的内部代码进行说明
+
+    // 0. ERC777中保留有ERC20中的name, symbol, totalSupply等字段逻辑
+
+    // 1. constructor, 在ERC777的构造器中，会调用ERC1820的接口对ETC777和ERC20标准进行注册，如下
+    /*
+        _ERC1820_REGISTRY.setInterfaceImplementer(address(this), keccak256("ERC777Token"), address(this));
+        _ERC1820_REGISTRY.setInterfaceImplementer(address(this), keccak256("ERC20Token"), address(this));
+    */
+
+    // 2. 增加一个 function granularity() public view returns (uint256)  定义了代币最小操作粒度(>=1)，只能在创建时设定，无法更改
+    //    在铸币、转账和销毁步骤，操作的代币数量必须是粒度的整数倍。decimal()定义的是代币存储单位，granularity()是在其之上的划分，
+    //    比如granularity()=2表示一次操作的代币数必须的2的整数倍
+
+    // 3. ERC777 引入了操作员（operator）的角色，定义为操作代币的角色，默认代币持有者就是代币的操作员；但可以授权其他人操作自己的代币。
+    //    1. 与ERC20中的approve、transferFrom稍有不同，ERC20未明确定义批准地址的角色，只是叫做spender。
+    //    2. 合约中默认初始化一批项目管理员(_defaultOperators)，可以管理所有人的代币，用户可以添加、撤销和查询属于自己的管理员地址
+
+    // 4. ERC777 关键带来的是两个转账函数，它们执行成功后都会触发对应事件
+    //      1. send(address recipient, uint256 amount, bytes memory data)   一般转账函数，data字段为转账备注
+    //      2. operatorSend(address sender, address recipient, uint256 amount, bytes memory data, bytes memory operatorData)  管理员代替持有者转账
+    //    它们都会调用一个共同的函数 _send(...) 来执行核心逻辑，_send 在执行真正的转账操作前还会调用 _callTokensToSend()，后者的逻辑是
+    //        通过ERC1820检查实际代币转账者和收款者地址是否实现了对应钩子函数，若实现了则调用，钩子函数和调用时机分别是
+    //        - IERC777Sender(from).tokensToSend()  转账前
+    //        - IERC777Recipient(to).tokensReceived() 转账后，注意，在send和operatorSend调用时（transfer不要求），若收款者是合约地址，则这个钩子函数是必须实现的，否则交易回退！避免了代币锁死到一个无效合约地址
+    //        钩子函数会将 _send()的所有参数原样传递给过去，以通知转账者和收款者，方便它们执行个性化逻辑。所以如果转账者和收款者希望收到通知，则需要实现对应钩子函数
+
+    // 5. ERC777增加了铸币和销毁代币的函数。在ERC20中没有明确定义这两个行为，只是用transfer来表达，即来自全零地址的转账是铸币，转给全零地址是销毁。
+    //      ERC777则定义了代币的铸币（_minted）、转移（send/operatorSend）和销毁（burn/operatorBurn）全过程。
+    //      1. 铸币：由于很多代币在发布时就确定了总发行量，所以铸币功能并不是必须的。ERC777只定义了 _minted()函数以及 Minted事件，若发行者要增加铸币功能，则必须按照规范调用 _minted()
+    //              铸币的过程类似转账，就是给一个账户转入N个代币，N会累加到totalSupply，同时操作会触发 Minted和Transfer事件
+    //      2. 转移：上面说过了。
+    //      3. 销毁：由操作员调用此函数，销毁的代币数量不能超过拥有的，销毁会在totalSupply中减去销毁的数量。最后触发Burned和Transfer事件
+    //      4. 上面的操作都应该正常支持代币数量为0的情况。
+}

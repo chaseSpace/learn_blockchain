@@ -104,8 +104,9 @@ contract myToken is ERC20("MyToken", "MTK"){
     // 这里不再列出，只解释几个函数和变量用途
     // _balances和_allowances 都是mapping，分别保存了地址对应余额，某地址授权给另一个地址可使用的余额
     // decimals() 可选，返回代币小数点后的位数
-    // approval() 授权用户可代表操作者花费多少代币，必须触发Approval事件
-    // transferFrom() 给被授权的用户（合约）使用，成功转账必须触发Transfer事件；
+    // approval(address spender, uint256 amount) bool 代币持有者授权spender可代表操作者花费代币的数量，必须触发Approval事件
+    // allowance(address holder, address spender) uint256 查询spender可以消费代币持有者holder的代币数量
+    // transferFrom(address from, address to, uint256 amount) bool 被授权用户代替持有者转账部分代币，成功转账必须触发Transfer事件；
     //   - 场景1：通常和approval配合使用，比如使用代币发放工资，总经理授权财务允许使用部分代币，财务再把部分代币发放给员工。
     //   - 场景2：DEX（合约处理的去中心化交易），比如alice使用DEX合约用100个代币A购买150个代币B，那么通常步骤是：alice先把100个代币A授权给DEX，
     //           然后调用DEX的兑换函数，由兑换函数调用transferFrom()转走alice的100个代币A，之后再转给alice150个代币B

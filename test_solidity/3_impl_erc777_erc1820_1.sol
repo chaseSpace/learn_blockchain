@@ -25,7 +25,7 @@ pragma solidity ^0.8.0;
 
 ## ERC1820介绍
 - 是一个全局的合约，在以太坊主网、测试网、甚至是ETC链上都有一个固定一致的合约地址：0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24
-    可以在这个合约地址上查询实现了哪些接口，所以它相当于是一个去中心化的中央注册表，合约A可以在其之上注册某些地址对应的接口，合约B可以去查询自己是否实现了合约A注册的接口信息
+    可以在这个合约地址上查询实现了哪些接口，所以它相当于是一个去中心化的中央注册表。使用时合约A作为实现者可以在其之上注册某些接口(以公示自己实现了某些标准)，合约B通常会与合约A交互，此时就可以去查询合约A是否实现了对应的标准
     -   ERC1820通过一种巧妙的方式（称为无密钥部署方式）将合约部署到一个固定地址的，具体自行查询
     -   ERC1820主要提供两个函数功能
         -   setInterfaceImplementer(address _addr, bytes32 _interfaceHash, address _implementer)
@@ -40,54 +40,42 @@ pragma solidity ^0.8.0;
 */
 
 // ERC1820的interface定义文件
-//import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
+// import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
 //// ERC1820的具体实现，开发者可以直接使用
-//import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
+// import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
 
 // 换为github地址，以便在浏览器remix中运行时遇到openzeppelin版本问题
-// ERC1820的interface定义文件
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/IERC1820Registry.sol";
-// ERC1820的具体实现，开发者可以直接使用
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/ERC1820Implementer.sol";
 
 
-// 1. 演示ERC1820的使用
-// - `TestERC1820Interface` 是一个接口注册者，构造器中调用1820去中心化注册表 注册了自己的someFunction函数
-contract TestERC1820Interface {
-    IERC1820Registry internal _erc1820 = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
+// 直接继承 @openzeppelin/contracts/utils/introspection/ERC1820implementer.sol 的模板代码进行改写
+// 为了方便测试，这个合约既是实现者也是查询者
+contract TestERC1820Implementer is ERC1820Implementer {
     bytes32 constant public SOMEFUNC_INTERFACE_HASH = keccak256("SOMEFUNC_INTERFACE_HASH");
-
-    constructor() {
-        _erc1820.setInterfaceImplementer(address(this), SOMEFUNC_INTERFACE_HASH, address(this));
-    }
-    function someFunction() public {}
-}
-
-// 直接使用 @openzeppelin/contracts/utils/introspection/ERC1820implementer.sol 提供的模板代码进行改写
-contract TestERC1820Implementer is IERC1820Implementer {
     IERC1820Registry internal _erc1820 = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
-    bytes32 constant public SOMEFUNC_INTERFACE_HASH = keccak256("SOMEFUNC_INTERFACE_HASH");
 
-    bytes32 private constant _ERC1820_ACCEPT_MAGIC = keccak256("ERC1820_ACCEPT_MAGIC");
-    mapping(bytes32 => mapping(address => bool)) private _supportedInterfaces;
-
-    address implementer;
+    event TransferOK(address, address, uint256);
 
     // from参数是代币转出者的地址
-    function test_transfer(address from, uint256 amount){
-        implementer = _erc1820.getInterfaceImplementer(from, SOMEFUNC_INTERFACE_HASH);
+    function test_transfer(address from, address to, uint256 amount) public view {
+        // 为了模拟，这里把地址都改为合约地址，因为合约本身才【实现】了 `SOMEFUNC_INTERFACE_HASH` 接口
+        from = address(this);
+        to = from;
+
+        address implementer = _erc1820.getInterfaceImplementer(from, SOMEFUNC_INTERFACE_HASH);
         if (implementer == address(0)) {
             // 转出者的代币合约没有实现 `SOMEFUNC_INTERFACE_HASH` 这个函数，可以进行相应处理，如转账失败
             return;
         }
         // 如果实现了目标函数，可以进行transfer逻辑...
+
+        // 转账完成后触发事件
+        emit TransferOK(from, to, amount);
     }
 
-    function canImplementInterfaceForAddress(bytes32 interfaceHash, address account) public view returns (bytes32)   {
-        return _supportedInterfaces[interfaceHash][account] ? _ERC1820_ACCEPT_MAGIC : bytes32(0x00);
-    }
-
-    function _registerInterfaceForAddress(bytes32 interfaceHash, address account) internal virtual {
-        _supportedInterfaces[interfaceHash][account] = true;
+    constructor(){
+        // 发布时
+        _registerInterfaceForAddress(SOMEFUNC_INTERFACE_HASH, address(this));
     }
 }
