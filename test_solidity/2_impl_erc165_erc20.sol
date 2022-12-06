@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /*
 
-OpenZeppelin库介绍
+实现ERC165和ERC20标准需要引入三方库OpenZeppelin，下面介绍OpenZeppelin库
 -   是以太坊生态中一个了不起的项目，它提供了许多经过社区反复审计及验证的合约模板（如ERC20，ERC721）及函数库如SafeMath，开发者可以使用
     这些现有的模板代码进行项目开发，可以提高项目的开发效率以及安全性。
 
@@ -95,6 +95,11 @@ contract TestERC165 is IERC165{
 // - 这个标准中，不是所有函数都是必须实现的
 // - 继承的这个ERC20是一个已经可以直接使用的合约，它实现了IERC20约定的那些接口（Interface of the ERC20）
 // - 其源码路径：./node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol
+// - ERC20的优点：
+//      -   定义统一的函数名:名称、发行量、转账函数、转账事件等
+//      -   以便交易所、钱包进行集成
+//      -   所有实现了这些函数的合约都是 ERC20Token
+//      -   ERC20 可以表示任何同质的可以交易的内容: 货币、股票、积分、债券、利息...
 contract myToken is ERC20("MyToken", "MTK"){
     // 这里不再列出，只解释几个函数和变量用途
     // _balances和_allowances 都是mapping，分别保存了地址对应余额，某地址授权给另一个地址可使用的余额
