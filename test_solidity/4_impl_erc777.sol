@@ -19,20 +19,22 @@ pragma solidity ^0.8.0;
 - ERC777标准向后兼容ERC20，这允许与这些代币无缝交互，还增加了一些改进，所以建议开发新代币时使用ERC777
 */
 
-//import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
-//import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
-//import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
+// 部署时注释这三行
+import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
+import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/IERC1820Registry.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/ERC1820Implementer.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/token/ERC777/ERC777.sol";
 
+// 1. 演示使用ERC777发行代币M7
 // 直接继承ERC777模板代码，稍作修改即可
 contract MyTokenERC777 is ERC777 {
     constructor(address[] memory defaultOperators) ERC777("MyToken777", "M7", defaultOperators) {
         // 发行2100w个代币
         uint initialSupply = 21000000 * 10 ** 18;
-        // 给合约地址发送全部发行量的M7代币
+        // 给部署者账户发送全部发行量的M7代币
         _mint(msg.sender, initialSupply, "", "");
     }
     // 下面对 ERC777 的内部代码进行说明
@@ -69,4 +71,106 @@ contract MyTokenERC777 is ERC777 {
     //      2. 转移：上面说过了。
     //      3. 销毁：由操作员调用此函数，销毁的代币数量不能超过拥有的，销毁会在totalSupply中减去销毁的数量。最后触发Burned和Transfer事件
     //      4. 上面的操作都应该正常支持代币数量为0的情况。
+}
+
+
+// 2. 演示如何为收款者合约实现tokensReceived的钩子函数
+// - 场景假设：寺庙实现了功德箱合约，在收取代币时需要记录每位施主的善款金额，并实现tokensReceived的钩子函数
+contract Merit is IERC777Recipient {
+    mapping(address => uint) public givers;
+    address _owner;
+    IERC777 _m7_token;
+    IERC1820Registry internal _erc1820 = IERC1820Registry(0xd9145CCE52D386f254917e481eB44e9943F39138);
+    bytes32 private constant _TOKENS_RECIPIENT_INTERFACE_HASH = keccak256("ERC777TokensRecipient");
+
+    event WithdrawOK(address, address, uint256);
+    constructor(IERC777 token)  {
+        // 这个合约地址作为收款地址，可以为自己实现ERC777TokensRecipient 方法，从而在转账时能够被代币合约调用
+        _erc1820.setInterfaceImplementer(address(this), _TOKENS_RECIPIENT_INTERFACE_HASH, address(this));
+        _owner = msg.sender;
+        _m7_token = token;
+    }
+    function tokensReceived(
+        address operator,
+        address from,
+        address to,
+        uint256 amount,
+        bytes calldata userData,
+        bytes calldata operatorData
+    ) external {
+        givers[from] += amount;
+    }
+
+    // 方丈提现（将这个合约地址中的M7代币全部转入自己的地址）
+    function withdraw() external {
+        require(msg.sender == _owner, "no permission");
+        uint balance = _m7_token.balanceOf(address(this));
+        _m7_token.send(_owner, balance, "");
+
+        emit WithdrawOK(address(this), _owner, balance);
+    }
+}
+
+// 部署一个临时合约查看一个hash值，下面会用到，也可以通过 http://tools.jb51.net/password/hash_md5_sha 查询 sha3-256("ERC777TokensSender")
+//  其实就是 0x29ddb589b1fb5fc7cf394961c1adf5f8c6454761adf795e67fe149f658abe895，作为合约参数使用时前面加0x
+contract QueryHash{
+    event erc777_token_sender_hash(bytes32);
+    constructor () {
+        emit erc777_token_sender_hash(keccak256("ERC777TokensSender"));
+    }
+}
+
+
+// 3. 如果代币持有者想要对转账操作进行更多控制，比如黑名单内的收款地址不允许转账等，就需要为自己的转账地址实现 `ERC777TokensSender`
+//  - 然而这与实现`ERC777TokensRecipient`不同，因为转账地址一般不是一个合约地址，是个外部账户，那该如何为外部账户实现接口呢？
+//  - 方法：编写一个代理合约（代理是字面意思）为外部账户实现该接口。原理是外部账户调用ERC1820的 setInterfaceImplementer(address account, bytes32 _interfaceHash, address implementer)时，该函数有个要求：
+//          如果 account 不等于 implementer，则验证implementer是否实现 canImplementInterfaceForAddress(bytes32 interfaceHash, address account)并正确返回keccak256("ERC1820_ACCEPT_MAGIC")，
+//          若返回正确则可以成功注册！所以现在只需要代理合约实现这个接口（这个账号）
+//  - # 部署此代理合约后，再通过ERC1820Registry的地址手动调用其 setInterfaceImplementer 为外部账户设置接口接口，参数分别是：
+//      <外部账户> <0x29ddb589b1fb5fc7cf394961c1adf5f8c6454761adf795e67fe149f658abe895（也就是keccak256("ERC777TokensSender")）> <此代理合约地址>
+//      若调用成功说明代理合约实现正确！
+contract SenderControl is IERC777Sender, IERC1820Implementer {
+    IERC1820Registry internal _erc1820 = IERC1820Registry(0xd9145CCE52D386f254917e481eB44e9943F39138);
+    bytes32 private constant _ERC1820_ACCEPT_MAGIC = keccak256("ERC1820_ACCEPT_MAGIC");
+
+    bytes32 private constant _TOKENS_SENDER_INTERFACE_HASH = keccak256("ERC777TokensSender");
+
+    mapping(address => bool) blacklist;
+    address _owner;
+
+    constructor() {
+        _owner = msg.sender;
+    }
+
+    function canImplementInterfaceForAddress(bytes32 interfaceHash, address account) external view returns (bytes32) {
+        // 我们这个代理合约较为简单，仅为部署者地址实现 canImplementInterfaceForAddress。当然，还可以为其他账户实现，比如实现一个 addERC777TokensSenderAccount() 函数
+        if (interfaceHash == _TOKENS_SENDER_INTERFACE_HASH && _owner == account) {
+            return _ERC1820_ACCEPT_MAGIC;
+        }
+        return bytes32(0x00);
+    }
+
+    // 实现钩子函数
+    function tokensToSend(
+        address operator,
+        address from,
+        address to,
+        uint256 amount,
+        bytes calldata userData,
+        bytes calldata operatorData
+    ) external{
+        if (blacklist[to]) {
+            revert("ohh... recipient is on blacklist!");
+        }
+    }
+
+    // 允许部署者更新黑名单
+    function updateBlacklist(address account, bool _block) public {
+        require(msg.sender == _owner, "no permission!");
+        if (_block) {
+            blacklist[account] = true;
+        }else {
+            delete blacklist[account];
+        }
+    }
 }

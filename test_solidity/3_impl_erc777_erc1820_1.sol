@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v4.8.0) (utils/introspection/IERC1820Registry.sol)
+// OpenZeppelin Contracts (last updated v4.8.0)
 
 pragma solidity ^0.8.0;
 /*
@@ -40,9 +40,9 @@ pragma solidity ^0.8.0;
 */
 
 // ERC1820的interface定义文件
-// import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
-//// ERC1820的具体实现，开发者可以直接使用
-// import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC1820Registry.sol";
+// ERC1820的具体实现，开发者可以直接使用
+import "@openzeppelin/contracts/utils/introspection/ERC1820implementer.sol";
 
 // 换为github地址，以便在浏览器remix中运行时遇到openzeppelin版本问题
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contracts/utils/introspection/IERC1820Registry.sol";
@@ -50,15 +50,20 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.8.0/contr
 
 
 // 直接继承 @openzeppelin/contracts/utils/introspection/ERC1820implementer.sol 的模板代码进行改写
-// 为了方便测试，这个合约既是实现者也是查询者
+// 为了方便测试，这个合约既是实现者（注册者）也是查询者
 contract TestERC1820Implementer is ERC1820Implementer {
     bytes32 constant public SOMEFUNC_INTERFACE_HASH = keccak256("SOMEFUNC_INTERFACE_HASH");
-    IERC1820Registry internal _erc1820 = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
+
+    // 由于公链要钱、测试链太慢，所以适合开发的就是浏览器的本地REMIX VM环境，然后本地环境并没有部署1820注册表合约，所以需要手动部署，
+    // 即手动从 https://testnet.bscscan.com/address/0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24#code 获取1820源码，
+    // 将源码部署到REMIX VM了，然后把部署后的合约地址粘贴到这里，我的合约就可以从此地址读取到1820合约了
+    IERC1820Registry internal _erc1820 = IERC1820Registry(0xd9145CCE52D386f254917e481eB44e9943F39138);
 
     event TransferOK(address, address, uint256);
+    event TransferFail(address, address, uint256);
 
     // from参数是代币转出者的地址
-    function test_transfer(address from, address to, uint256 amount) public view {
+    function test_transfer(address from, address to, uint256 amount) public {
         // 为了模拟，这里把地址都改为合约地址，因为合约本身才【实现】了 `SOMEFUNC_INTERFACE_HASH` 接口
         from = address(this);
         to = from;
@@ -66,7 +71,8 @@ contract TestERC1820Implementer is ERC1820Implementer {
         address implementer = _erc1820.getInterfaceImplementer(from, SOMEFUNC_INTERFACE_HASH);
         if (implementer == address(0)) {
             // 转出者的代币合约没有实现 `SOMEFUNC_INTERFACE_HASH` 这个函数，可以进行相应处理，如转账失败
-            return;
+            emit TransferFail(from, to, amount);
+        return;
         }
         // 如果实现了目标函数，可以进行transfer逻辑...
 
@@ -76,6 +82,6 @@ contract TestERC1820Implementer is ERC1820Implementer {
 
     constructor(){
         // 发布时模拟接口注册
-        _registerInterfaceForAddress(SOMEFUNC_INTERFACE_HASH, address(this));
+        _erc1820.setInterfaceImplementer(address(this), SOMEFUNC_INTERFACE_HASH, address(this));
     }
 }
