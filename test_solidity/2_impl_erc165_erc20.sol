@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+import "@openzeppelin/contracts/utils/introspection/ERC165Storage.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /*
@@ -69,6 +70,7 @@ contract TestAddress {
 // - 如果合约继承了这个interface，则需要对外提供这个函数，以供外部查询是否实现了参数interfaceId对应的函数，interfaceId是函数选择器。
 // - 函数选择器就是待调用函数的哈希值的前4字节，通常以十六进制体现，如0x01ffc9a7
 // - 1. 关于具体实现有1点要求，如果参数interfaceId=0xffffffff，需要返回false。
+// - 2. 可以直接继承 ERC165Storage 使用即可
 contract TestERC165 is IERC165{
     // this.supportsInterface.selector = IERC165.supportsInterface.selector = 0x01ffc9a7
     bytes4 private constant _INTERFACE_ID_ERC165 = this.supportsInterface.selector;
@@ -90,6 +92,15 @@ contract TestERC165 is IERC165{
     }
 }
 
+// 3.1 直接继承 ERC165Storage 使用
+contract TestERC165 is ERC165Storage{
+    constructor(){
+        // 因为继承的是个合约具体实现而非接口定义，所以可以用super关键字调用父类方法
+        _registerInterface(super.supportsInterface.selector);
+        _registerInterface(TestERC165.someFunction.selector); // 这里可以写成 this.someFunction.selector 但规范不推荐在构造函数中使用this
+    }
+    function someFunction(uint) external pure{}
+}
 
 // 4. 演示ERC20的使用
 // ERC20是使用最广泛的代币标准，所有钱包和交易所都按照这个标准进行代币的支持，ERC20标准约定了代币名称、总量以及相关的交易函数
