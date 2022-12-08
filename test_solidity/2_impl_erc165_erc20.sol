@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /*
 
-实现ERC165和ERC20标准需要引入三方库OpenZeppelin，下面介绍OpenZeppelin库
+合约实现ERC165和ERC20标准需要引入三方库OpenZeppelin，下面介绍OpenZeppelin库
 -   是以太坊生态中一个了不起的项目，它提供了许多经过社区反复审计及验证的合约模板（如ERC20，ERC721）及函数库如SafeMath，开发者可以使用
     这些现有的模板代码进行项目开发，可以提高项目的开发效率以及安全性。
 
@@ -65,26 +65,27 @@ contract TestAddress {
 
 
 // 3. 演示ERC165的使用
-// ERC165 规定了一个签名为     function supportsInterface(bytes4 interfaceId) external view returns (bool)  的 interface
-// - 如果合约继承了这个interface，则需要对外提供这个函数，以供外部查询是否实现了这个函数，参数interfaceId是函数选择器。
+// ERC165 规定了一个签名为 function supportsInterface(bytes4 interfaceId) external view returns (bool)  的接口
+// - 如果合约继承了这个interface，则需要对外提供这个函数，以供外部查询是否实现了参数interfaceId对应的函数，interfaceId是函数选择器。
 // - 函数选择器就是待调用函数的哈希值的前4字节，通常以十六进制体现，如0x01ffc9a7
 // - 1. 关于具体实现有1点要求，如果参数interfaceId=0xffffffff，需要返回false。
 contract TestERC165 is IERC165{
-    bytes4 private constant _INTERFACE_ID_ERC165 = bytes4(0x01ffc9a7);
+    // this.supportsInterface.selector = IERC165.supportsInterface.selector = 0x01ffc9a7
+    bytes4 private constant _INTERFACE_ID_ERC165 = this.supportsInterface.selector;
     mapping(bytes4 => bool) private _supportedInterfaces;
     constructor(){
-        // 先注册两个自有函数
+        // 比如先注册两个自有函数
         _registerInterface(_INTERFACE_ID_ERC165);
         _registerInterface(TestERC165.someFunction.selector); // 这里可以写成 this.someFunction.selector 但规范不推荐在构造函数中使用this
     }
     function _registerInterface(bytes4 interfaceId) internal {
-        require(interfaceId != bytes4(0xffffffff), "ERC165: invalid interface id");
+        require(interfaceId != 0xffffffff, "ERC165: invalid interface id");
         _supportedInterfaces[interfaceId] = true;
     }
     function someFunction(uint) external pure{}
 
     // 这个合约的功能之一就是提供supportsInterface给外界查询是否实现了这个合约的某个函数
-    function supportsInterface(bytes4 interfaceId) external view override returns (bool){
+    function supportsInterface(bytes4 interfaceId) external view returns (bool){
         return _supportedInterfaces[interfaceId];
     }
 }
