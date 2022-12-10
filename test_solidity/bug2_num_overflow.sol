@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.7.0;
+pragma solidity 0.8.0;
 
 /*
 @整型溢出攻击
@@ -32,7 +32,10 @@ contract TimeLock {
     // 存在漏洞的方法：假设 lockTime[msg.sender] = 1555555555，传参 _seconds = 2^256-1000000000，那么lockTime[msg.sender] = 555555555
     // 这个值必然小于目前的任何时间戳数字，将导致下面的提取函数中的锁定判断一定验证通过！
     function increaseLockTime(uint _seconds) public {
-        lockTime[msg.sender] += _seconds;
+        // 从v0.8.0开始，溢出将导致revert，所以这个版本开始新增unchecked功能，其块内将允许溢出计算。
+        unchecked {
+            lockTime[msg.sender] += _seconds;
+        }
         emit printLockTime(lockTime[msg.sender]);
     }
 
@@ -42,6 +45,6 @@ contract TimeLock {
 
         require(lockTime[msg.sender] < block.timestamp, "still in lock");
         balance[msg.sender] -= _amount;
-        msg.sender.transfer(_amount);
+        payable(msg.sender).transfer(_amount);
     }
 }
