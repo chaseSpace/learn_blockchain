@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.0;
+pragma solidity ^0.8.0;
 
 /*
 @整型溢出攻击
@@ -24,7 +24,7 @@ contract TimeLock {
 
     event printLockTime(uint);
 
-    function deposit(address) public payable {
+    function deposit() public payable {
         balance[msg.sender] += msg.value;
         lockTime[msg.sender] = block.timestamp + 1 weeks;
     }
