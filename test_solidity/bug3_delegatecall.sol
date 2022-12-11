@@ -46,7 +46,7 @@ contract Store {
         (bool success, ) = to.delegatecall(abi.encodeWithSignature(callerReceiveSig, _amount, interest));
         require(success, "call callerReceive failed!");
 
-        // 打印利息点数（此时已被攻击合约修改）
+        // 打印利息点数（此时已被攻击合约修改，并且是永久修改）
         emit InterestPrint(interest);
 
         require(0 < interest && interest < 100, "invalid interest");
@@ -92,6 +92,9 @@ contract Attack {
     receive() external payable {}
 }
 
+// 改进/修复方法：
+// 1. 资产变更后 再与外部地址交互，即遵循 检查-生效-交互模式
+// 2. 重要函数 不要使用DelegateCall
 
 /*
 @扩展
