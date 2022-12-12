@@ -1,0 +1,239 @@
+    /* "0x00_learn_bytecode.sol":57:241  contract Example {... */
+  mstore(0x40, 0x80)
+    /* "0x00_learn_bytecode.sol":111:112  0 */
+  0x00
+    /* "0x00_learn_bytecode.sol":100:112  uint abc = 0 */
+  0x01
+  sstore
+    /* "0x00_learn_bytecode.sol":118:168  constructor() {... */
+  callvalue
+  dup1
+  iszero
+  tag_1
+  jumpi
+  0x00
+  dup1
+  revert
+tag_1:
+  pop
+    /* "0x00_learn_bytecode.sol":151:161  msg.sender */
+  caller
+    /* "0x00_learn_bytecode.sol":142:148  _owner */
+  0x00
+  dup1
+    /* "0x00_learn_bytecode.sol":142:161  _owner = msg.sender */
+  0x0100
+  exp
+  dup2
+  sload
+  dup2
+  0xffffffffffffffffffffffffffffffffffffffff
+  mul
+  not
+  and
+  swap1
+  dup4
+  0xffffffffffffffffffffffffffffffffffffffff
+  and
+  mul
+  or
+  swap1
+  sstore
+  pop
+    /* "0x00_learn_bytecode.sol":57:241  contract Example {... */
+  dataSize(sub_0)
+  dup1
+  dataOffset(sub_0)
+  0x00
+  codecopy
+  0x00
+  return
+stop
+
+sub_0: assembly {
+        /* "0x00_learn_bytecode.sol":57:241  contract Example {... */
+      mstore(0x40, 0x80)
+      callvalue
+      dup1
+      iszero
+      tag_1
+      jumpi
+      0x00
+      dup1
+      revert
+    tag_1:
+      pop
+      jumpi(tag_2, lt(calldatasize, 0x04))
+      shr(0xe0, calldataload(0x00))
+      dup1
+      0x4edd1483
+      eq
+      tag_3
+      jumpi
+    tag_2:
+      0x00
+      dup1
+      revert
+        /* "0x00_learn_bytecode.sol":173:239  function set_val(uint _value) public {... */
+    tag_3:
+      tag_4
+      0x04
+      dup1
+      calldatasize
+      sub
+      dup2
+      add
+      swap1
+      tag_5
+      swap2
+      swap1
+      tag_6
+      jump	// in
+    tag_5:
+      tag_7
+      jump	// in
+    tag_4:
+      stop
+    tag_7:
+        /* "0x00_learn_bytecode.sol":226:232  _value */
+      dup1
+        /* "0x00_learn_bytecode.sol":220:223  abc */
+      0x01
+        /* "0x00_learn_bytecode.sol":220:232  abc = _value */
+      dup2
+      swap1
+      sstore
+      pop
+        /* "0x00_learn_bytecode.sol":173:239  function set_val(uint _value) public {... */
+      pop
+      jump	// out
+        /* "#utility.yul":88:205   */
+    tag_10:
+        /* "#utility.yul":197:198   */
+      0x00
+        /* "#utility.yul":194:195   */
+      dup1
+        /* "#utility.yul":187:199   */
+      revert
+        /* "#utility.yul":334:411   */
+    tag_12:
+        /* "#utility.yul":371:378   */
+      0x00
+        /* "#utility.yul":400:405   */
+      dup2
+        /* "#utility.yul":389:405   */
+      swap1
+      pop
+        /* "#utility.yul":334:411   */
+      swap2
+      swap1
+      pop
+      jump	// out
+        /* "#utility.yul":417:539   */
+    tag_13:
+        /* "#utility.yul":490:514   */
+      tag_21
+        /* "#utility.yul":508:513   */
+      dup2
+        /* "#utility.yul":490:514   */
+      tag_12
+      jump	// in
+    tag_21:
+        /* "#utility.yul":483:488   */
+      dup2
+        /* "#utility.yul":480:515   */
+      eq
+        /* "#utility.yul":470:533   */
+      tag_22
+      jumpi
+        /* "#utility.yul":529:530   */
+      0x00
+        /* "#utility.yul":526:527   */
+      dup1
+        /* "#utility.yul":519:531   */
+      revert
+        /* "#utility.yul":470:533   */
+    tag_22:
+        /* "#utility.yul":417:539   */
+      pop
+      jump	// out
+        /* "#utility.yul":545:684   */
+    tag_14:
+        /* "#utility.yul":591:596   */
+      0x00
+        /* "#utility.yul":629:635   */
+      dup2
+        /* "#utility.yul":616:636   */
+      calldataload
+        /* "#utility.yul":607:636   */
+      swap1
+      pop
+        /* "#utility.yul":645:678   */
+      tag_24
+        /* "#utility.yul":672:677   */
+      dup2
+        /* "#utility.yul":645:678   */
+      tag_13
+      jump	// in
+    tag_24:
+        /* "#utility.yul":545:684   */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+        /* "#utility.yul":690:1019   */
+    tag_6:
+        /* "#utility.yul":749:755   */
+      0x00
+        /* "#utility.yul":798:800   */
+      0x20
+        /* "#utility.yul":786:795   */
+      dup3
+        /* "#utility.yul":777:784   */
+      dup5
+        /* "#utility.yul":773:796   */
+      sub
+        /* "#utility.yul":769:801   */
+      slt
+        /* "#utility.yul":766:885   */
+      iszero
+      tag_26
+      jumpi
+        /* "#utility.yul":804:883   */
+      tag_27
+      tag_10
+      jump	// in
+    tag_27:
+        /* "#utility.yul":766:885   */
+    tag_26:
+        /* "#utility.yul":924:925   */
+      0x00
+        /* "#utility.yul":949:1002   */
+      tag_28
+        /* "#utility.yul":994:1001   */
+      dup5
+        /* "#utility.yul":985:991   */
+      dup3
+        /* "#utility.yul":974:983   */
+      dup6
+        /* "#utility.yul":970:992   */
+      add
+        /* "#utility.yul":949:1002   */
+      tag_14
+      jump	// in
+    tag_28:
+        /* "#utility.yul":939:1002   */
+      swap2
+      pop
+        /* "#utility.yul":895:1012   */
+      pop
+        /* "#utility.yul":690:1019   */
+      swap3
+      swap2
+      pop
+      pop
+      jump	// out
+
+    auxdata: 0xa264697066735822122035b90a279bfd69292250dbe6e9f45c70ac30c03c0f50b99a887b24d9b292edce64736f6c63430008110033
+}
