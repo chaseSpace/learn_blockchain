@@ -2,12 +2,33 @@
 
 **关键字**：EVM执行引擎、汇编指令、操作码、字节码
 
-<style>
+```{css, echo=FALSE}
 pre {
+  max-height: 300px;
   overflow-y: auto;
-  max-height: 450px;
 }
-</style>
+
+pre[class] {
+  max-height: 100px;
+}
+```
+
+```{css, echo=FALSE}
+.scroll-100 {
+  max-height: 100px;
+  overflow-y: auto;
+  background-color: inherit;
+}
+```
+
+```{r}
+# pretend that we have a lot of code in this chunk
+if (1 + 1 == 2) {
+  # of course that is true
+  print(mtcars)
+  # we just printed a lengthy data set
+}
+```
 
 ## 基本概念
 
