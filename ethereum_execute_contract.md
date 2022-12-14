@@ -160,14 +160,21 @@ gas_price * gas_limit = total max gas costs
 > 下载支持全功能的cpp实现的solc编译器（推荐），查看[官方安装指导](https://docs.soliditylang.org/en/v0.8.17/installing-solidity.html#installing-the-solidity-compiler)  
 > 下载支持部分功能的solcjs: npm install -g solc
 
-通过一份简单代码来说明；
+通过一份简单代码（位于`test_solidity/0x00_learn_bytecode.sol`）来说明；
 
 ```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
 contract Example {
-    address _owner;
-    constructor() {
-        _owner = msg.sender;
-    }
+  address _owner;
+  uint abc = 0;
+  constructor() {
+    _owner = msg.sender;
+  }
+  function set_val(uint _value) public {
+    abc = _value;
+  }
 }
 ```
 
