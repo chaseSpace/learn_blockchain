@@ -11,3 +11,4 @@ contract Example {
         abc = _value;
     }
 }
+// 请阅读本仓库下的文档：https://github.com/chaseSpace/learn_blockchain/blob/main/ethereum_execute_contract.md

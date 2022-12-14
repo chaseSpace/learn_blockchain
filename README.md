@@ -41,8 +41,8 @@ TODO
 [以太坊介绍](./ethereum_intro.md)  
 [以太坊技术细节](./ethereum_tech_detail.md)
 
-[智能合约介绍](./smart_contract.md)
-
+[智能合约介绍](./smart_contract.md)  
+[以太坊合约执行分析](./ethereum_execute_contract.md)
 
 ## Issue
 本仓库下的md文档均由本人亲自整理或编写，总字数超20万，其中难免出现笔误或因个人水平问题导致的错误，欢迎读者提出issue帮助完善本仓库，在此表示致谢！
