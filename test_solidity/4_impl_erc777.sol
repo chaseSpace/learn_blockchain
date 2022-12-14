@@ -111,7 +111,7 @@ contract Merit is IERC777Recipient {
     }
 }
 
-// 部署一个临时合约查看一个hash值，下面会用到，也可以通过 http://tools.jb51.net/password/hash_md5_sha 查询 sha3-256("ERC777TokensSender")
+// 部署一个临时合约查看一个hash值，下面会用到，也可以通过 https://emn178.github.io/online-tools/sha3_256.html 查询 keccak256("ERC777TokensSender")
 //  其实就是 0x29ddb589b1fb5fc7cf394961c1adf5f8c6454761adf795e67fe149f658abe895，作为合约参数使用时前面加0x
 contract QueryHash{
     event erc777_token_sender_hash(bytes32);

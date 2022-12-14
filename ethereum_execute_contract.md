@@ -32,7 +32,7 @@ EVM指令集支持多个PUSH指令，如`PUSH1`, `PUSH2`等，后面的数字指
 ### Call Data
 
 它是在调用合约时附在交易的`data`
-字段的信息，通常包含一个4字节的方法标识，方法标识的构造方式：`sha3-256("somefunc(uint)uint")[:4]`，即函数签名的SHA3-256哈希后的前4字节。
+字段的信息，通常包含一个4字节的方法标识，方法标识的构造方式：`keccak256("somefunc(uint)uint")[:4]`，即函数签名的keccak256哈希后的前4字节。
 
 ### 程序计数器（Program Counter）
 
