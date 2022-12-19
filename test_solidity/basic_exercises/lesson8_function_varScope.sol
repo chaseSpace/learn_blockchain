@@ -6,11 +6,16 @@ pragma solidity ^0.8.0;
 -   介绍
     -   函数可以定义在合约内、外
     -   可以有多个入参和出参，出参可以命名
+    构造函数：
+        -   只在部署时运行一次的函数，没有function关键字
+        -   用于初始化所有状态变量、部署时给合约注入以太币
+        -   可以没有
     函数可见性（必须表明）：
         -   private：限制性最强，函数只能在所属的合约内使用，继承合约不可以使用
         -   internal：可以在定义和继承合约内使用
         -   external：只能从外部调用，内部可以用this.xxx来调用
         -   public：都能调用
+        -   构造函数不用设置可见性，旧版本通过internal来表明不可部署，新版本通过abstract来表示。
     状态可变性（mutablity）
         -   view：只能读取状态
         -   pure：不能读写
@@ -26,9 +31,9 @@ pragma solidity ^0.8.0;
 */
 
 // v0.7.0版本开始支持合约外定义函数，不过只能被合约调用，不能直接部署
-    function free(int a, int b) pure returns (int,int) {
-        return (a,b); // 多返回值需要是tuple类型
-    }
+function free(int a, int b) pure returns (int,int) {
+    return (a,b); // 多返回值需要是tuple类型
+}
 
 contract LearnFunction{
 
@@ -71,7 +76,7 @@ contract VarScope{
 contract LearnVarScope {
     constructor() {
         VarScope vs = new VarScope(1);
-        vs.v2(); // getter()形式访问public变量
+        vs.v2(); // getter()形式访问public变量，solidity自动为public变量创建一个getter函数，方便外部访问其值。
         // vs.v1();  // 不能外部访问internal变量
     }
 }
