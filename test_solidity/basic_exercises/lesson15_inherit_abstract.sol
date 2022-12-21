@@ -16,8 +16,13 @@ pragma solidity ^0.8.0;
     -   不能被部署，通常作为父合约被继承
     -   通常会定义一些无实现的纯虚函数
     -   子函数必须实现父合约的所有虚函数，否则就仍然得被标记为 abstract
-*/
 
+@接口合约
+    -   用于定义空函数，由继承合约实现
+    -   无法继承合约或接口
+    -   无法定义变量/结构体/枚举
+    -   可用于合约通信
+*/
 
 
 
@@ -86,5 +91,22 @@ contract LearnAbstract is Example {
     // 若子合约没有实现父合约的所有虚函数，则子合约还得被标记为 abstract
     function getA() public override view returns (uint){
         return a;
+    }
+}
+
+// 4. 接口合约，可被继承
+interface IToken {
+    function transfer(address recipient, uint amount) external;
+}
+
+// -    用于合约通信
+contract Award {
+    IToken immutable token;
+    constructor (address _tokenAddr) {
+        token = IToken(_tokenAddr);
+    }
+
+    function sendBonus(address user) public {
+        token.transfer(user, 100);
     }
 }
