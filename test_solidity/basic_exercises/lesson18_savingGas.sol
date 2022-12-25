@@ -5,11 +5,12 @@ pragma solidity ^0.8.0;
 @gas优化
 -   背景
     合约的存储和执行需要计算和存储资源，而矿工节点资源有限，所以用户需要为包含合约交互的交易设定一个合理的gas price和gas limit，以允许交易得到优先执行。
+    同时也是为了抵御DoS攻击。
     同时需要知道：
         -   交易的gas计价是根据合约字节码长度和计算量进行的；
-        -   单个区块消耗的gas数量是有上限的，2021年是1250万；
+        -   单个区块消耗的gas数量是有上限的，该数量会动态调整，2021年是1250万；
         -   随着DeFi的兴起，以太坊区块的空间利用率逐渐提高，由于矿工是按照gas price较高的交易优先打包的原则
-            -   那么根据total gas=gas price * gas number公式，第一个变量增加，想要降低一笔交易的总gas消耗，只能降低gas数量，这就涉及到合约交易的gas优化。
+            -   那么根据total gas=gas price * gas used公式，第一个变量增加，想要降低一笔交易的总gas消耗，只能降低gas数量，这就涉及到合约交易的gas优化。
 
 -   介绍
     一笔交易中的gas消耗的组成=txGas + dataGas + opGas，其中txGas是交易本身的消耗，dataGas是指交易中的data字段携带数据消耗gas，而opGas是指合约计算量消耗gas
@@ -48,5 +49,3 @@ pragma solidity ^0.8.0;
     total gas的美元价值=gas_price * gas_used * ether_price= 86.74Gwei * 3,533,714 * 1e-9 Ether * $3829.61 = $1173.83，其中1e-9是把gwei转ether，3829.61是交易发生时1ETH的美元价格
 
 */
-
-// TODO
