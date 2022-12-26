@@ -456,9 +456,11 @@ Gas译作汽油，形象地比作维持以太坊平台持续运行的燃料。Ga
 > 它最大的特点是提出了费用销毁机制（BaseFees不会支付给矿工），减少了攻击动机，提供以太坊安全性。关于更多详细请自行查询。
 
 **【GasPrice预估服务】**  
-有几个网站或工具可以提供 Gas 价格预测的数据服务，如浏览器插件Blocknative，网页端的ETH Gas Station，Etherscan、OKLink，这些网站还提供API服务，不过它们各自提供的数据准确度就有待用户使用后评估。
+有几个网站或工具可以提供 Gas 价格预测的数据服务，如浏览器插件Blocknative，网页端的[ETH Gas Station](https://ethgasstation.info/) 、[Etherscan](https://etherscan.io/gastracker) 、[OKLink](https://www.oklink.com/eth/gas-price/guzzlers) ，这些网站还提供API服务，不过它们各自提供的数据准确度就有待用户使用后评估。
 
-浏览器插件在体验上就更具优势，可以在交易时便捷输入几个Gas字段（如PriorityFees、GasLimit）。
+>注意：预估时会涉及到传统GasPrice和EIP-1559版本的GasPrice。对于传统GasPrice，它是一个字段，而EIP-1559是BaseFees（区块链网络决定，不可修改）和PriorityFees两个字段。
+
+浏览器插件在体验上就更具优势，可以在交易时快速输入几个Gas字段（如PriorityFees、GasLimit）。
 
 #### 4.3 区块Gas限制
 是指一个区块中所有交易总共能消耗的最大Gas数量，所以它也限制了一个区块能包含的交易数量。
