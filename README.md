@@ -16,7 +16,8 @@
 [零知识证明学习资源汇总](https://learnblockchain.cn/2019/11/08/zkp-info)
 
 ### 1.4 重要资讯  
-[2022-12-16_Aztec 筹集 1 亿美元用于构建加密以太坊（涉及隐私交易、压缩交易等技术）](https://news.marsbit.cc/20221216092927524453.html)
+- [2022-12-16_Aztec 筹集 1 亿美元用于构建加密以太坊（涉及隐私交易、压缩交易等技术）](https://news.marsbit.cc/20221216092927524453.html)
+- [2022-11-17_2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？（HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%）](https://www.8btc.com/article/6788632)
 
 ## 2. 智能合约开发
 ### 2.1 书籍  
@@ -25,7 +26,6 @@
 本仓库下的 `./test_solidity/basic_exercises` 系列代码与《智能合约技术与开发》书籍第三、四章的内容排序基本一致，可作为参考。
 
 ### 2.2 重要资讯  
-[2022-11-17_2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？（HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%）](https://www.8btc.com/article/6788632)
 
 ## 3. 本仓库下的文档
 
@@ -47,8 +47,11 @@
 [智能合约介绍（整理）](./smart_contract.md)  
 [以太坊合约执行分析](./ethereum_execute_contract.md)  
 
-[TODO_DeFi全了解]  
-[TODO_NFT全了解]
+[TODO_NFT全了解](./nft_overview.md)  
+[TODO_DeFi全了解](./defi_overview.md)  
+[TODO_GameFi全了解](./gamefi_overview.md)
+
+[TODO_IPFS全了解]
 
 ## Issue
 本仓库下的md文档均由本人亲自整理或编写，总字数超20万，其中难免出现笔误或因个人水平问题导致的错误，欢迎读者提出issue帮助完善本仓库，在此表示致谢！
