@@ -260,8 +260,6 @@ Protocol、Kucoin、OneKey 等也在使用其 API 服务。如果想要更高效
 
 #### 3.5.3 关于NFTScan 多链NFT浏览器
 
-www.nftscan.com
-
 NFTScan Multi-chain Explorer 提供各种数据查询和分析服务，如下：
 
 - NFTScan 支持查询单个 collection/contract 或钱包地址的所有 NFT 信息；
@@ -308,7 +306,7 @@ NFT的全称是Non-Fungible Tokens，中文常翻译为"不可同质化代币/�
    CryptoKitties 的加密猫游戏；
     0. 随着CryptoKitties的出现，NFT成为了主流。CryptoKitties是一个基于区块链的虚拟游戏，允许玩家领养、喂养，以及交易虚拟猫。喂养后的虚拟猫更是独一无二，其价值不可复制（稀缺才能让价值最大化）。加密猫这样在价值塑造的呈现方式上面的创新，使得
     CryptoKitties 迅速走红，并成为市场的主流，于是 NFT 开始大行其道；
-7. 2018年和2019年，NFT 生态实现了大规模增长。在 OpenSea 和 SuperRare 引领下，NFT 市场蓬勃发展；其次就是web3钱包的升级让NFT的使用更为简便
+7. 2018年和2019年，NFT 生态实现了大规模增长。在 OpenSea 和 SuperRare 引领下，NFT 市场蓬勃发展；其次就是web3钱包的升级让NFT的使用更为简便。其他还有各种市场数据平台的推出如NFTScan、Nansen等让项目更加有迹可循，吸引更多参与者带动整个行业的发展。
 8. TODO
 
 ### 5.2 NFT生态图
@@ -317,14 +315,46 @@ NFT的全称是Non-Fungible Tokens，中文常翻译为"不可同质化代币/�
 
 **市场更新较快，仅供参考**
 
-### 5.3 NFT相关网站
+### 5.3 NFT数据分析平台
 
-#### www.nonfungible.com
+NFT数据分析平台可以让我们快速发现目前市场上（最）流行的NFT Collections以及它们的详细信息（如价格、交易量走势），这些平台通常提供各种维度的Collections排名，如Price、7d Volume、Average Price、Owner Count(Holders)等。
+需要说明的是`Volume`这个维度，它指的是（一段时间内的）交易**量**，量指的是交易总价值或交易笔数，可以根据Volume维度下的数字是否携带货币单位来辨别，若不关联时间也可表示单个Collection或NFT的总价值。
+
+另外这些平台可能还提供近期（即将）发布的NFT Collection信息，供用户查看，这些信息对NFT关注者十分有用，如专注于NFT投资的用户。
+
+更高级的数据分析平台会提供付费功能，比如更加实时的市场动向通知，指定NFT的交易动向（交易量、价格等），还有更直接的提供给用户投资建议。
+
+#### 1. https://nonfungible.com
 
 知名NFT网站，可称之为NFT市场数据库，提供NFT藏品多维度排名数据、NFT生态内各类分析报告以及NFT最新新闻；
 NonFungible团队已经协助数十家公司和投资者制定NFT战略，从尽职调查到市场分析，再到评估世界上一些最大的NFT投资组合。
 
-#### www.nftcryptonews.com
+#### 2. https://rarity.tools
+
+网站首页直接列出了各种维度的NFT Collection排名，非常直观，还可以直接检索单个Collection的信息。
+
+#### 3. https://flip.xyz
+
+它的特别之处在于提供了NFT交易市场维度（目前流行的如OpenSea、Uniswap、Coinbase等）的交易趋势图，[链接直达][11]。
+
+
+#### 4. 其他网站
+
+https://nftgo.io  
+https://traitsniper.com  
+https://www.nansen.ai  
+https://icy.tools  
+https://luckytrader.com 提供NFT嗅探工具和NFT drop计划  
+https://nftscan.com  
+https://www.degenz.finance  
+https://poprank.io 通过**美学**对NFT排名
+
+>**NFT drop计划**  
+> 指的是一种NFT发行方式，会提供铸币的具体时间日期，并且NFT drop通常会提供白名单以便尽早进入。NFT投资/收藏者会密切关注这个信息，以便快速以较低的价格收藏感兴趣的NFT。
+> 但仍然需要注意谨防**NFT诈骗**！可以通过选择知名的NFT铸造作者以及知名NFT发行平台避坑。
+
+
+
 
 ### 5.4 流行的NFT交易市场
 
@@ -332,7 +362,7 @@ NonFungible团队已经协助数十家公司和投资者制定NFT战略，从尽
 
 #### 1. [OpenSea](https://opensea.io/)
 
-应该是目前流行度第一的NFT交易市场，于2017年创立。该平台上除了常见的艺术、音乐、域名、虚拟世界、交易卡、体育类商品外，还可以找到其他平台很少见到的艺术资产如虚拟土地和宠物，也允许用户使用不同的加密货币支付，如ETH和DAI。
+目前流行度第一的NFT交易市场，于2017年创立。该平台上除了常见的艺术、音乐、域名、虚拟世界、交易卡、体育类商品外，还可以找到其他平台很少见到的艺术资产如虚拟土地和宠物，也允许用户使用不同的加密货币支付，如ETH和DAI。
 
 #### 2. [Binance](https://www.binance.com/en/nft/home)
 
@@ -357,6 +387,10 @@ Rarible由Alexei Falin和Alexander Salnikov于2020年初推出，是一个供用
 
 这个平台上面销售的NFT作品作者都是需要被邀请的，这可能是与其他平台不同的地方，而且这个平台一般邀请顶级艺术家进行合作，所以值得一试。
 
+### 5.5 NFT带来的岗位
+
+TODO
+
 [1]:https://eips.ethereum.org/EIPS/eip-721
 
 [2]:https://opensea.io/assets/ethereum/0xdb8f52d04f9156dd2167d2503a5a2ceef3125b09/758
@@ -377,6 +411,8 @@ Rarible由Alexei Falin和Alexander Salnikov于2020年初推出，是一个供用
 
 [10]:https://www.guru99.com/nft-marketplace.html
 
+[11]:https://flip.xyz/metrics/exchange-market-share
+
 ### 参考
 
 - [区块链存储平台Arweave的介绍｜Footprint Analytics](https://blog.csdn.net/m0_60517769/article/details/122727282)
@@ -387,3 +423,5 @@ Rarible由Alexei Falin和Alexander Salnikov于2020年初推出，是一个供用
 - [9个卡通头像，卖了1696万美元…](https://baijiahao.baidu.com/s?id=1717098089174082074&wfr=spider&for=pc)
 - [What Are CryptoPunks?](https://academy.binance.com/en/articles/what-are-cryptopunks)
 - [15 Best NFT Marketplace: Top Platform to Buy & Sell NFT (2023)](https://www.guru99.com/nft-marketplace.html)
+- [一览8个 NFT 分析平台](https://baijiahao.baidu.com/s?id=1743206134346621423)
+- [关于NFT drop你需要知道的一切](https://baijiahao.baidu.com/s?id=1722242430800174145)
