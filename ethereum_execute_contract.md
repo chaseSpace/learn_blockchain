@@ -171,14 +171,14 @@ gas_price * gas_limit = total max gas costs
 
 我们编写的solidity代码经过remix或本地编译器如sloc、slocjs可以编译为对应的汇编代码，再转换为机器执行的纯十六进制字符的代码。
 
-1. Remix的汇编代码和字节码可以在【Solidity Compiler——Compile Details】路径查看；
+1. Remix的汇编代码和字节码可以在【Solidity Compiler——>Compile Details】路径查看；
 2. 还可以下载solc编译器到本地，使用编译器编译代码得到汇编代码和字节码。
 
 
 > 下载支持全功能的cpp实现的solc编译器（推荐），查看[官方安装指导](https://docs.soliditylang.org/en/v0.8.17/installing-solidity.html#installing-the-solidity-compiler)  
 > 下载支持部分功能的solcjs: npm install -g solc
 
-通过一份简单代码（位于`test_solidity/0x00_learn_bytecode.sol`）来说明；
+通过如下一段简单代码来说明；
 
 ```solidity
 // SPDX-License-Identifier: MIT
