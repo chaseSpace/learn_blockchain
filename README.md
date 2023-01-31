@@ -47,7 +47,7 @@
 [智能合约介绍（整理）](./smart_contract.md)  
 [以太坊合约执行分析](./ethereum_execute_contract.md)  
 
-[TODO_NFT全了解](./nft_overview.md)  
+[NFT全了解](./nft_overview.md)  
 [TODO_DeFi全了解](./defi_overview.md)  
 [TODO_GameFi全了解](./gamefi_overview.md)
 
