@@ -471,6 +471,8 @@ Rarible由Alexei Falin和Alexander Salnikov于2020年初推出，是一个供用
 
 [11]:https://flip.xyz/metrics/exchange-market-share
 
+---
+
 ### 参考
 
 - [区块链存储平台Arweave的介绍｜Footprint Analytics](https://blog.csdn.net/m0_60517769/article/details/122727282)

@@ -601,7 +601,7 @@ TODO
 
 ---
 
-参考
+### 参考
 - [《区块链技术开发指南-马兆丰》](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
 - [《精通比特币》](https://www.oreilly.com/library/view/mastering-bitcoin/9781491902639/ch05.html)
 - [个人博客：比特币区块链哈希树(MerkleRoot)的计算方法](https://www.exchen.net/bitcoin-blockchain-merkleroot.html)
