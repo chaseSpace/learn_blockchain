@@ -29,6 +29,8 @@
 
 ## 3. 本仓库下的文档
 
+每篇文档的字数都比较多，请根据兴趣选择阅读~
+
 [区块链介绍（整理）](./blockchain_introduce.md)  
 [区块链产业（整理）](./blockchain_industries.md)  
 [区块链金融（整理）](./blockchain_finance.md)  
