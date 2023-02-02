@@ -29,34 +29,34 @@
 
 ## 3. 本仓库下的文档
 
-每篇文档的字数都比较多，请根据兴趣选择阅读~
+每篇文档的字数都不少，请读者根据兴趣和时间安排选择阅读~
 
-[区块链介绍（整理）](./blockchain_introduce.md)  
-[区块链产业（整理）](./blockchain_industries.md)  
-[区块链金融（整理）](./blockchain_finance.md)  
-[区块链技术细节（整理）](./blockchain_tech_detail.md)  
-[区块链密码学（整理）](./cryptograph.md)  
-[共识算法（整理）](./consensus.md)
+[区块链介绍（整理）_1.2w字](./blockchain_introduce.md)  
+[区块链产业（整理）_未完结](./blockchain_industries.md)  
+[区块链金融（整理）_未完结](./blockchain_finance.md)  
+[区块链技术细节（整理）_3.9w字](./blockchain_tech_detail.md)  
+[区块链密码学（整理）_1w字](./cryptograph.md)  
+[共识算法（整理）_3.4w字](./consensus.md)
 
-[比特币介绍（整理）](./bitcoin_intro.md)  
-[比特币的发展（整理）](./bitcoin_development.md)  
-[比特币技术细节（整理）](./bitcoin_tech_detail.md)  
-[比特币使用](./bitcoin_usage.md)  
+[比特币介绍（整理）_3.5k字](./bitcoin_intro.md)  
+[比特币的发展（整理）_4k字](./bitcoin_development.md)  
+[比特币技术细节（整理）_2.5w字](./bitcoin_tech_detail.md)  
+[比特币使用_2w字](./bitcoin_usage.md)  
 
-[以太坊介绍（整理）](./ethereum_intro.md)  
-[以太坊技术细节（整理）](./ethereum_tech_detail.md)
+[以太坊介绍（整理）_8k字](./ethereum_intro.md)  
+[以太坊技术细节（整理）_3.7w字](./ethereum_tech_detail.md)
 
-[智能合约介绍（整理）](./smart_contract.md)  
-[以太坊合约执行分析](./ethereum_execute_contract.md)  
+[智能合约介绍（整理）_1.4w字](./smart_contract.md)  
+[以太坊合约执行分析_2w字](./ethereum_execute_contract.md)  
 
-[NFT全了解](./nft_overview.md)  
+[NFT全了解_2w字](./nft_overview.md)  
 [TODO_DeFi全了解](./defi_overview.md)  
 [TODO_GameFi全了解](./gamefi_overview.md)
 
 [TODO_IPFS全了解]
 
 ## Issue
-本仓库下的md文档均由本人亲自整理或编写，总字数超20万，其中难免出现笔误或因个人水平问题导致的错误，欢迎读者提出issue帮助完善本仓库，在此表示致谢！
+本仓库下的md文档均由本人亲自整理或编写，其中难免出现笔误或因个人水平问题导致的错误，欢迎读者提出issue帮助完善本仓库，在此表示致谢！
 
 ## License
 本仓库中除标题含「整理」的文章支持无限制转载外，其余文章均为原创，在知识共享协议CC-BY-NC-SA 4.0下发布。
