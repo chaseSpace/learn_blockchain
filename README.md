@@ -1,6 +1,9 @@
 # Learn BlockChain
 
-持续更新中...
+### 项目介绍
+- **作者**：[Leigg](https://github.com/chaseSpace)
+- **状态**：持续更新中...
+- **开始于**：2022-10-27
 
 ## 1. 区块链开发
 
