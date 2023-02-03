@@ -53,7 +53,7 @@
 [智能合约介绍（整理）_1.4w字](./smart_contract.md)  
 [以太坊合约执行分析_2w字](./ethereum_execute_contract.md)  
 
-[NFT全了解_2w字](./nft_overview.md)  
+[NFT全了解_2.5w字](./nft_overview.md)  
 [TODO_DeFi全了解](./defi_overview.md)  
 [TODO_GameFi全了解](./gamefi_overview.md)
 
