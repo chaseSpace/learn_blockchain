@@ -36,8 +36,8 @@
 每篇文档的字数都不少，请读者根据兴趣和时间安排选择阅读~
 
 [区块链介绍（整理）_1.2w字](./blockchain_introduce.md)  
-[区块链产业（整理）_未完结](./blockchain_industries.md)  
-[区块链金融（整理）_未完结](./blockchain_finance.md)  
+[区块链产业（整理）_进度40%](./blockchain_industries.md)  
+[区块链金融（整理）_进度15%](./blockchain_finance.md)  
 [区块链技术细节（整理）_3.9w字](./blockchain_tech_detail.md)  
 [区块链密码学（整理）_1w字](./cryptograph.md)  
 [共识算法（整理）_3.4w字](./consensus.md)
@@ -51,7 +51,9 @@
 [以太坊技术细节（整理）_3.7w字](./ethereum_tech_detail.md)
 
 [智能合约介绍（整理）_1.4w字](./smart_contract.md)  
+[智能合约开发指南_进度20%](./smart_contract_dev_guide.md)  
 [以太坊合约执行分析_2w字](./ethereum_execute_contract.md)  
+
 
 [NFT全了解_2.5w字](./nft_overview.md)  
 [TODO_DeFi全了解](./defi_overview.md)  
