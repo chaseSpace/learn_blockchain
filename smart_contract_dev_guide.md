@@ -38,6 +38,8 @@ Solidity发展至今已经快十年，生态内已经有大量优秀的开发工
 
 需要注意的是，Solidity在语法设计上存在一些缺陷，当然，这些年不断的被改进，在易用性和安全性上已经得到了极大的提升。
 
+对于Solidity的学习，这里强烈推荐本仓库主页中列出的书籍 [智能合约技术与开发](https://item.jd.com/10057770151476.html) ，且在本仓库中也存放有笔者对该书的[代码笔记](./test_solidity/basic_exercises) 。
+
 ### 1.2 Vyper
 
 Vyper是另一种与EVM兼容（可编译为像Solidity一样的EVM字节码）且相比Solidity更注重安全性的合约语言，它与Python的语法非常相似，但相比Python去掉了许多不必要的特性（如类继承、函数重载、运算符重载等），
@@ -93,9 +95,12 @@ Hardhat是由Nomic Labs开发的基于JavaScript的以太坊合约开发环境�
 
 虽然Truffle创建的较早，但后来的Hardhat正逐渐侵占Truffle的市场，因为Hardhat在测试环境、错误管理以及TypeScript集成方面拥有更好的灵活性和更小的使用成本。
 
-下面是推荐的教程：  
-[Hardhat官方入门教程_英文][2]  官方文档，持续更新  
-[Hardhat官方入门教程_中文译版][3] 翻译于2020年，部分信息可能过时，但不影响入门
+下面是推荐的资源：  
+- [Hardhat官方入门教程_英文][2] 官方文档，持续更新
+- [Hardhat官方入门教程_中文译版][3] 翻译于2020年，部分信息已经过时，但不影响入门（其中在**部署到线上网络**部分提到使用ropsten测试网，但这个测试网已经下线，需要改为其他测试网，可以查看英文版获得最新步骤）
+
+
+- [Hardhat使用模板][4] 官方提供，包含一个简单项目示例
 
 ### 2.5 其他框架
 
@@ -134,6 +139,7 @@ TODO
 [1]: https://eth-brownie.readthedocs.io/en/stable/
 [2]: https://hardhat.org/tutorial
 [3]: https://learnblockchain.cn/article/1356
+[4]: https://github.com/NomicFoundation/hardhat-boilerplate
 
 ### 参考
 
