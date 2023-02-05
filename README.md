@@ -2,9 +2,9 @@
 
 ### 项目介绍
 - **作者**：[Leigg](https://github.com/chaseSpace)
-- **维护状态**：持续更新···
+- **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：今日（2023-02-04）
+- **上次更新**：2023-02-05
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -52,7 +52,7 @@
 [以太坊技术细节（整理）_3.7w字](./ethereum_tech_detail.md)
 
 [智能合约介绍（整理）_1.4w字](./smart_contract.md)  
-[智能合约开发指南_进度20%](./smart_contract_dev_guide.md)  
+[智能合约开发指南_进度30%](./smart_contract_dev_guide.md)  
 [以太坊合约执行分析_2w字](./ethereum_execute_contract.md)  
 
 
