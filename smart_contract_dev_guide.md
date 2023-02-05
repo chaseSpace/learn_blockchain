@@ -31,7 +31,7 @@
 ### 1.1 Solidity
 
 首先，一个不用过多思考的选择是Solidity，因为目前90%的智能合约都是Solidity写的。Solidity算是最早也是最流行的面向对象的高级静态语言，最初2014年是为以太坊EVM量身设计的，
-后来又出现了很多兼容以太坊EVM的区块链平台（如Ethereum、Avalanche、Moonbeam、Polygon、BSC），所以现在Solidity也可以运行在其他那些兼容EVM的区块链上。 在目前排名前十的[Defi项目][0]
+后来又出现了很多兼容以太坊EVM的区块链平台（如Ethereum、Avalanche、Moonbeam、Polygon、BSC），所以现在Solidity也可以运行在其他那些兼容EVM的区块链上。 在目前排名前十的 [Defi项目][0]
 中，有九个使用Solidity作为他们的主要编程语言。
 
 Solidity发展至今已经快十年，生态内已经有大量优秀的开发工具可供使用，包括第三方库以及IDE等（后面介绍）。另外，在EVM上运行的比Solidity更原生的语言是汇编语言Yul，进阶Solidity时你会了解到Solidity与Yul通过内联交互以提高性能的应用。
