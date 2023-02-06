@@ -101,6 +101,7 @@ Hardhat是由Nomic Labs开发的基于JavaScript的以太坊合约开发环境�
 
 
 - [Hardhat使用模板][4] 官方提供，包含一个简单项目示例
+- [GithubRepo: learn_hardhat][5] 笔者发起的Hardhat学习项目，可供参考
 
 ### 2.5 其他框架
 
@@ -140,6 +141,7 @@ TODO
 [2]: https://hardhat.org/tutorial
 [3]: https://learnblockchain.cn/article/1356
 [4]: https://github.com/NomicFoundation/hardhat-boilerplate
+[5]: https://github.com/chaseSpace/learn_hardhat
 
 ### 参考
 
