@@ -135,12 +135,27 @@ TODO
 
 ## 5. 区块链浏览器
 
+## 6. 应用领域
+
+### 6.1 NFT
+
+下面是推荐的资源：  
+[公众号：登链社区——NFT系列文章第11\~13篇][0]
+
+### 6.2 DeFi
+
+### 6.3 DAO
+
+
+
+
 [0]: https://defillama.com/
 [1]: https://eth-brownie.readthedocs.io/en/stable/
 [2]: https://hardhat.org/tutorial
 [3]: https://learnblockchain.cn/article/1356
 [4]: https://github.com/NomicFoundation/hardhat-boilerplate
 [5]: https://github.com/chaseSpace/learn_hardhat
+[6]: https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU5NzUwODcyMw==&action=getalbum&album_id=1716985081560367106&scene=173&from_msgid=2247500069&from_itemidx=2&count=3&nolastread=1#wechat_redirect
 
 ### 参考
 
