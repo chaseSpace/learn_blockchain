@@ -21,8 +21,8 @@
 [零知识证明学习资源汇总](https://learnblockchain.cn/2019/11/08/zkp-info)
 
 ### 1.4 重要资讯  
-- [2022-12-16_Aztec 筹集 1 亿美元用于构建加密以太坊（涉及隐私交易、压缩交易等技术）](https://news.marsbit.cc/20221216092927524453.html)
-- [2022-11-17_2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？（HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%）](https://www.8btc.com/article/6788632)
+[2022-12-16_Aztec 筹集 1 亿美元用于构建加密以太坊（涉及隐私交易、压缩交易等技术）](https://news.marsbit.cc/20221216092927524453.html)  
+[2022-11-17_2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？（HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%）](https://www.8btc.com/article/6788632)
 
 ## 2. 智能合约开发
 ### 2.1 书籍  
