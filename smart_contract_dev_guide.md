@@ -143,8 +143,10 @@ TODO
 
 ### 6.3 DAO
 
+## 7. 资源推荐
 
-
+[learn_smartcontract][7]  
+这是笔者的另一个项目，汇集了合约开发的各类学习资源，可供读者参考。
 
 [0]: https://defillama.com/
 [1]: https://eth-brownie.readthedocs.io/en/stable/
@@ -153,6 +155,7 @@ TODO
 [4]: https://github.com/NomicFoundation/hardhat-boilerplate
 [5]: https://github.com/chaseSpace/learn_hardhat
 [6]: https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU5NzUwODcyMw==&action=getalbum&album_id=1716985081560367106&scene=173&from_msgid=2247500069&from_itemidx=2&count=3&nolastread=1#wechat_redirect
+[7]: https://github.com/chaseSpace/learn_smartcontract
 
 ### 参考
 
