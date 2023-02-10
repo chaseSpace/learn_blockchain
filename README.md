@@ -4,7 +4,7 @@
 - **作者**：[Leigg](https://github.com/chaseSpace)
 - **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：2023-02-08
+- **上次更新**：2023-02-10
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -26,9 +26,11 @@
 
 ## 2. 智能合约开发
 ### 2.1 书籍  
-[智能合约技术与开发](https://item.jd.com/10057770151476.html)
+[智能合约技术与开发](https://item.jd.com/10057770151476.html) 本仓库下的 [basic_exercises](./test_solidity/basic_exercises) 系列代码与《智能合约技术与开发》书籍第三、四章的内容排序基本一致，可作为参考。
 
-本仓库下的 `./test_solidity/basic_exercises` 系列代码与《智能合约技术与开发》书籍第三、四章的内容排序基本一致，可作为参考。
+### 2.2 Git仓库
+[learn_smartcontract](https://github.com/chaseSpace/learn_smartcontract)
+
 
 ### 2.2 重要资讯  
 
