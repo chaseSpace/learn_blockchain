@@ -441,7 +441,7 @@ Gas译作汽油，形象地比作维持以太坊平台持续运行的燃料。Ga
 - `GasLimit`：用户在发起交易时设置，指的是本次交易可消耗的最大Gas数量；
 - `GasPrice`(有时也称`GasFees`）：用户在发起交易时设置，指的是本次交易消耗Gas的单价，计价货币是ETH，但是合约消耗不了几个ETH那么多费用，所以如同人民币的圆分角那样设立了更小的计价单位。
             对此这里不细讲太多，只说明`GasPrice`常用的单位是Gwei，1 ETH=10^9 Gwei;
-- `GasUsed`：实际交易消耗的Gas数量，不超过`GasLimit`。
+- `GasUsed`：实际交易消耗的Gas数量，不超过`GasLimit`。在区块链浏览器的单个交易详情页，通常会观察到此字段的值旁边有个百分比，比如GasUsed By Tx: 24876(41.46%)，这个41.46%是GasUsed/GasLimit，此时页面上显示的GasLimit为60000。
 
 总的交易开销（transaction cost）= `GasPrice` * `GasUsed`。
 
