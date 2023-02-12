@@ -17,7 +17,7 @@
   - [2.1 关于部署代码](#21-关于部署代码)
   - [2.2 runtime代码](#22-Runtime)
   - [2.3 最终字节码](23-最终字节码)
-  - [2.4 为EVM设计的汇编语言](#24-为EVM设计的汇编语言)
+  - [2.4 为EVM设计的指令集](#24-为EVM设计的指令集)
   - [2.5 详解上面的汇编指令](#25-详解上面的汇编指令)
 
 ## 1. 基本概念
@@ -83,47 +83,9 @@ EVM在开始执行合约字节码的时候，会为这个合约创建一个临�
 可以读取它.
 - return data：是存放合约返回值的区域。可以通过指令`RETURN, REVERT`修改它，指令`RETURNDATASIZE, RETURNDATACOPY`读取它；
 
-下面是Geth项目中涉及EVM解释器运行合约的源码 [EVMInterpreter.Run()](https://sourcegraph.com/github.com/ethereum/go-ethereum@v1.10.26/-/blob/core/vm/interpreter.go?L116:27&popover=pinned#tab=references)
-：
-
-```go
-// 这是EVM执行合约的核心方法
-func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (ret []byte, err error) {
-  // 省略部分代码
-  
-  // 初始化执行合约所需的各种变量，其中就有stack、memory、pc等对象
-  var (
-      op          OpCode // 当前执行的操作码，会在下面的for循环执行时不断变化
-      mem = NewMemory()  // bound memory，内部初始化一个包含[]byte的结构体
-      stack = newstack() // local stack，内部初始化一个[]uint256数组
-      callContext = &ScopeContext{ // 属于当前合约的执行上下文
-        Memory:   mem,
-        Stack:    stack,
-        Contract: contract,
-      }
-      // For optimisation reason we're using uint64 as the program counter.
-      // It's theoretically possible to go above 2^64. The YP defines the PC
-      // to be uint256. Practically much less so feasible.
-      pc = uint64(0) // program counter
-      cost uint64
-      // copies used by tracer
-      pcCopy  uint64 // needed for the deferred EVMLogger
-      gasCopy uint64 // for EVMLogger to log gas remaining before execution
-      logged  bool   // deferred EVMLogger should ignore already logged steps
-      res     []byte // result of the opcode execution function，当前调用返回值
-  )
-
-  // 省略部分代码
-
-  for {
-    // 省略执行合约的逻辑。。。
-  }
-}
-```
-
 ### 1.8 OpCode（操作码/EVM指令/助记符）
 
-它是为EVM量身设计的一套汇编指令，支持算数运算、逻辑运算、位运算以及条件跳转等功能，属于图灵完备的语言。构建在其之上的solidity等语言当然也是图灵完备的语言。
+它是为EVM量身设计的一套指令集，支持算数运算、逻辑运算、位运算以及条件跳转等功能，属于图灵完备的语言。构建在其之上的solidity等语言当然也是图灵完备的语言。
 
 OpCode可以称为操作码/EVM汇编指令/助记符(mnemonic)，其作用是帮助人们阅读代码逻辑。合约最终的编译和部署结果都是一串OpCode和操作数据组成的。
 EVM执行合约逻辑就是从编译后的字节码序列中按顺序取出一个个OpCode执行的，如果执行到某个OpCode失败了（如参数不够/gas不够），那么EVM将revert所有的更改。
@@ -162,10 +124,118 @@ gas_price * gas_limit = total max gas costs
 
 我们需要了解EVM执行合约的大致过程：
 
-- EVM中执行的每个指令都叫做OpCode（操作码）
-- 在合约执行前，操作码会被转换为CPU可读的字节码。
-- 首先，程序计数器（PC，类似寄存器）从合约字节码中读取一个OpCode，然后从JumpTable中检索出对应操作，即指令包含的函数集合。
-  接下来计算该指令包含的所有函数所需的gas，如果足够，则执行该指令，若不够，则扣完gas，并回退执行过的指令。（根据指令不同，可能会对堆栈、memory或StateDB进行操作）
+- EVM中执行的每个指令都叫做OpCode（操作码）；
+- 在合约执行时，编译来的字节码会被EVM转换为可读的操作码以及被操作的数据，再执行它们；
+- 首先，程序计数器（PC，类似寄存器）从合约字节码中读取一个，然后从JumpTable（一个长度为256的数组）中通过index检索出操作码对应的操作函数及gas成本等信息；
+  然后就是扣减gas（若操作码是动态gas成本，则需要计算），如果足够，则执行该操作码，若不够，则扣完gas，并回退执行过的指令。（根据指令不同，可能会对堆栈、memory或StateDB进行操作）
+- 然后，当本条操作码成功执行后，程序计数器自增，再进入下一次循环（执行下一条指令）。
+
+具体执行过程是在一个for循环中，这里直接将geth执行合约的函数代码 [EVMInterpreter.Run()][0] 原样粘贴过来，请结合注释阅读：
+<details>
+  <summary>代码较长，展开查看</summary>
+  <pre>
+
+```go
+// 这是EVM执行合约的核心方法
+func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (ret []byte, err error) {
+  // 省略部分代码
+  
+  // 初始化执行合约所需的各种变量，其中就有stack、memory、pc等对象
+  var (
+      op          OpCode // 当前执行的操作码，会在下面的for循环执行时不断变化
+      mem = NewMemory()  // bound memory，内部初始化一个包含[]byte的结构体
+      stack = newstack() // local stack，内部初始化一个[]uint256数组
+      callContext = &ScopeContext{ // 属于当前合约的执行上下文
+        Memory:   mem,
+        Stack:    stack,
+        Contract: contract,
+      }
+      // For optimisation reason we're using uint64 as the program counter.
+      // It's theoretically possible to go above 2^64. The YP defines the PC
+      // to be uint256. Practically much less so feasible.
+      pc = uint64(0) // program counter 程序计数器
+      cost uint64
+      // copies used by tracer
+      pcCopy  uint64 // needed for the deferred EVMLogger
+      gasCopy uint64 // for EVMLogger to log gas remaining before execution
+      logged  bool   // deferred EVMLogger should ignore already logged steps
+      res     []byte // result of the opcode execution function，当前调用返回值
+  )
+ 
+
+  for {
+      if in.cfg.Debug {
+          // Capture pre-execution values for tracing.
+          logged, pcCopy, gasCopy = false, pc, contract.Gas
+      }
+      // Get the operation from the jump table and validate the stack to ensure there are
+      // enough stack items available to perform the operation.
+      // 根据程序计数器读取下一个要执行的操作码，实际是个byte类型
+      op = contract.GetOp(pc)
+      operation := in.cfg.JumpTable[op]  // 从数组中找到对应的操作对象
+      cost = operation.constantGas // For tracing （操作对应的固定gas成本）
+      // Validate stack（提前检查栈内元素个数是否足够本次操作所需）
+      if sLen := stack.len(); sLen < operation.minStack {
+          return nil, &ErrStackUnderflow{stackLen: sLen, required: operation.minStack}
+      } else if sLen > operation.maxStack {
+          return nil, &ErrStackOverflow{stackLen: sLen, limit: operation.maxStack}
+      }
+      // 扣减固定gas部分
+      if !contract.UseGas(cost) {
+          return nil, ErrOutOfGas
+      }
+      // 这个操作是否动态gas成本（根据参数长度或个数来决定扣减的gas数额）
+      if operation.dynamicGas != nil {
+          // All ops with a dynamic memory usage also has a dynamic gas cost.
+          var memorySize uint64
+          // calculate the new memory size and expand the memory to fit
+          // the operation
+          // Memory check needs to be done prior to evaluating the dynamic gas portion,
+          // to detect calculation overflows
+          if operation.memorySize != nil {
+              memSize, overflow := operation.memorySize(stack)
+              if overflow {
+                  return nil, ErrGasUintOverflow
+              }
+              // memory is expanded in words of 32 bytes. Gas
+              // is also calculated in words.
+              if memorySize, overflow = math.SafeMul(toWordSize(memSize), 32); overflow {
+                  return nil, ErrGasUintOverflow
+              }
+          }
+          // Consume the gas and return an error if not enough gas is available.
+          // cost is explicitly set so that the capture state defer method can get the proper cost
+          // 计算动态gas成本
+          var dynamicCost uint64
+          dynamicCost, err = operation.dynamicGas(in.evm, contract, stack, mem, memorySize)
+          cost += dynamicCost // for tracing
+          // 扣减动态gas部分
+          if err != nil || !contract.UseGas(dynamicCost) {
+              return nil, ErrOutOfGas
+          }
+          // Do tracing before memory expansion
+          if in.cfg.Debug {
+              in.cfg.Tracer.CaptureState(pc, op, gasCopy, cost, callContext, in.returnData, in.evm.depth, err)
+              logged = true
+          }
+          if memorySize > 0 {
+              mem.Resize(memorySize)
+          }
+      } else if in.cfg.Debug {
+          in.cfg.Tracer.CaptureState(pc, op, gasCopy, cost, callContext, in.returnData, in.evm.depth, err)
+          logged = true
+      }
+      // execute the operation (执行操作，pc=程序计数器，in是EVM引擎包含有账本DB对象，callContext包含栈和memory对象)
+      res, err = operation.execute(&pc, in, callContext)
+      if err != nil {
+          break
+      }
+      pc++ // 计数器自增，准备执行下一条指令（注意pc在执行操作时可能已经改变。意思是如果又从字节码中提取了数据，则计数器要继续往右移，移动长度等于数据长度）
+  }
+}
+```
+</pre>
+</details>
 
 ## 2. 过程详解
 
@@ -211,7 +281,7 @@ PUSH1 0x80 PUSH1 0x40 MSTORE ...省略
 
 以Example合约的前面部分操作码序列为例进行解释：`PUSH1 0x80 PUSH1 0x40 MSTORE`
 
-- 首先，操作码不是字节码，操作码还能读，字节码就完全是 0128asdasda9s87d98asd 这样的一串不可读的十六进制字符了，每一个操作码可以转换为一个字节。
+- 首先，操作码不是字节码，操作码还能读，字节码就完全是 0128asdasda9s87d98asd 这样的一串人类不可读的十六进制字符了，每一个操作码可以转换为一个字节。
 - `PUSH1 0x80 PUSH1 0x40` 表示将1字节的0x80入栈，紧接着是入栈0x40（随时记住，一个栈元素最大为32byte即256bit）
 - `MSTORE` 指令是将一个值保存到EVM 临时内存的操作，接收2个参数，第一个参数是用于存放值的内存地址，第二个参数的要存放的值，
   注意这个指令按规定是它的参数从栈里面获取（而不是外部输入），所以这里的逻辑是 MSTORE 0x40 0x80 （将值0x80存入地址0x40）
@@ -280,14 +350,12 @@ sub_0 : assembly {
 6080604052348015600f57600080fd5b506004361060285760003560e01c80634edd148314602d575b600080fd5b60436004803603810190603f91906085565b6045565b005b8060018190555050565b600080fd5b6000819050919050565b6065816054565b8114606f57600080fd5b50565b600081359050607f81605e565b92915050565b6000602082840312156098576097604f565b5b600060a4848285016072565b9150509291505056fea264697066735822122035b90a279bfd69292250dbe6e9f45c70ac30c03c0f50b99a887b24d9b292edce64736f6c63430008110033
 ```
 
-### 2.4 为EVM设计的汇编语言
+### 2.4 为EVM设计的指令集
 
-以太坊开发者为EVM设计了一种low-level的汇编语言，在没有高级语言（如Solidity）的情况下也可以使用。这种汇编语言也可以嵌入到高级语言源代码中当作“内联汇编（inline
-assembly）”使用。
+以太坊开发者为EVM专门设计了一套指令集，也就是前面提到的操作码（OpCode），前面做了简单介绍，这里就深入介绍。
 
-汇编代码由执行引擎支持的汇编指令集中的一系列指令和操作的数据组成，不同的执行引擎支持的指令集也不相同，指令集可以由引擎的开发者自定义一套。solidity运行在EVM执行引擎上，
-所以该指令集我们称为EVM指令集，完整的指令集表在[这里](https://ethervm.io/#opcodes)
-查询。需要注意，在EVM环境中，把支持的指令集也叫做**OpCode**，即操作码。
+指令集代码是由代码执行引擎支持的汇编指令集中的一系列指令和待操作的数据组成，不同的执行引擎支持的指令集一般是不同的，指令集可以由引擎的开发者自定义一套。EVM执行引擎基于OpCode运行，
+所以OpCode我们也称为EVM指令集，完整的EVM指令集表在 [这里](https://ethervm.io/#opcodes) 查询。
 
 这里也以下图简单说明一下：
 
@@ -683,6 +751,8 @@ EVM从上到下按序执行这段操作码序列，如果遇到`JUMP`、`RETURN`
 这是因为这段操作码序列严格来说是部署代码，仅在部署时执行，部署后这段代码会return`00062`后面的一段操作码序列给EVM保存，并在以后外部调用合约时执行。
 
 ---
+
+[0]: https://sourcegraph.com/github.com/ethereum/go-ethereum@v1.10.26/-/blob/core/vm/interpreter.go?L116:27&popover=pinned#tab=references
 
 ### 参考
 
