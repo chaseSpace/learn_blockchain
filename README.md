@@ -4,7 +4,7 @@
 - **作者**：[Leigg](https://github.com/chaseSpace)
 - **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：2023-02-12
+- **上次更新**：2023-02-14
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -15,9 +15,10 @@
 
 ### 1.2 书籍  
 [精通比特币-第二版（2018_经典读物）](https://book.douban.com/subject/30280401/)  
+[精通以太坊（2018_经典读物）](https://book.douban.com/subject/27161851/)  
 [区块链技术开发指南-马兆丰（2020_偏向技术原理&开发）](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
 
-### 1.3 网页资源  
+### 1.3 在线资源  
 [零知识证明学习资源汇总](https://learnblockchain.cn/2019/11/08/zkp-info)
 
 ### 1.4 重要资讯  
@@ -29,9 +30,11 @@
 [智能合约技术与开发](https://item.jd.com/10057770151476.html) 本仓库下的 [basic_exercises](./test_solidity/basic_exercises) 系列代码与《智能合约技术与开发》书籍第三、四章的内容排序基本一致，可作为参考。
 
 ### 2.2 Git仓库
-[learn_smartcontract](https://github.com/chaseSpace/learn_smartcontract)
+[learn_smartcontract](https://github.com/chaseSpace/learn_smartcontract) 关于智能合约的内容也会在此仓库持续更新
 
-### 2.3 重要资讯  
+### 2.3 在线资源  
+[WTF学院](https://wtf.academy/) 在2023年1月受到以太坊基金会资助的Web3在线免费教育网站，十分推荐！  
+[Solidity by Example](https://solidity-by-example.org/) 包含Solidity特性、漏洞以及应用（DeFi）简明教学，推荐！
 
 ## 3. 本仓库下的文档
 
