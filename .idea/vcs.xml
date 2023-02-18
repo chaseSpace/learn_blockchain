@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/learn_smartcontract" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/learn_smartcontract/nft_beginner_series/0.generate_art_nft/generative-art-nft" vcs="Git" />
   </component>
 </project>

@@ -4,7 +4,7 @@
 - **作者**：[Leigg](https://github.com/chaseSpace)
 - **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：2023-02-14
+- **上次更新**：2023-02-18
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -29,12 +29,40 @@
 ### 2.1 书籍  
 [智能合约技术与开发](https://item.jd.com/10057770151476.html) 本仓库下的 [basic_exercises](./test_solidity/basic_exercises) 系列代码与《智能合约技术与开发》书籍第三、四章的内容排序基本一致，可作为参考。
 
-### 2.2 Git仓库
-[learn_smartcontract](https://github.com/chaseSpace/learn_smartcontract) 关于智能合约的内容也会在此仓库持续更新
-
-### 2.3 在线资源  
+### 2.2 在线资源
 [WTF学院](https://wtf.academy/) 在2023年1月受到以太坊基金会资助的Web3在线免费教育网站，十分推荐！  
 [Solidity by Example](https://solidity-by-example.org/) 包含Solidity特性、漏洞以及应用（DeFi）简明教学，推荐！
+
+### 2.3 ERC系列示例
+[ERC-20 典型合约示例（本仓库）_待更新](./learn_smartcontract/nft_series/erc20_example.md)
+
+### 2.4 NFT系列
+
+- **手把手教程**
+    - [NFT新手教程（本仓库）](./learn_smartcontract/nft_beginner_series)
+
+
+- **学习知名的NFT项目**
+    - [点此查看（本仓库）](./learn_smartcontract/other/learn_famous_project_code.md)
+
+
+- **NFT编程技巧**
+    - [如何节省Gas开销（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)
+    - [如何使用OpenZeppelin编写可升级合约（本仓库整理）](./learn_smartcontract/other/how_to_upgrade_contract.md)
+### 2.5 DeFi系列
+TODO
+
+### 2.6 DAO系列
+TODO
+
+### 2.7 合约编程建议
+[合约的安全编程（本仓库）](./learn_smartcontract/other/security_coding.md)  
+[合约的技巧性编程（本仓库）](./learn_smartcontract/other/skilled_coding.md)  
+[如何节省Gas费用_更新中（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)
+
+[The Solcurity Standard][2] - [译文][3] 如何写出高质量Solidity代码  
+[SWC Registry][4] 专业的智能合约弱点分类和测试用例
+
 
 ## 3. 本仓库下的文档
 
@@ -70,3 +98,7 @@
 
 ## License
 本仓库中除标题含「整理」的文章支持无限制转载外，其余文章均为原创（转载须注明作者及来源），在知识共享协议CC-BY-NC-SA 4.0下发布。
+
+[2]: https://github.com/transmissions11/solcurity
+[3]: https://mp.weixin.qq.com/s/fcNz4P52Ku0Ey469zqdX2A
+[4]: https://swcregistry.io/
