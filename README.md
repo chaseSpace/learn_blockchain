@@ -34,7 +34,7 @@
 [Solidity by Example](https://solidity-by-example.org/) 包含Solidity特性、漏洞以及应用（DeFi）简明教学，推荐！
 
 ### 2.3 ERC系列示例
-[ERC-20 典型合约示例（本仓库）_待更新](./learn_smartcontract/nft_series/erc20_example.md)
+[通过 USDT 学习 ERC-20（本仓库）_待更新](./learn_smartcontract/nft_series/erc20_example.md)
 
 ### 2.4 NFT系列
 
