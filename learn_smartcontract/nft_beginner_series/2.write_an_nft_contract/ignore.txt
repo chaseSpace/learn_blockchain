@@ -1,0 +1,3 @@
+const ETH_ACCOUNT_PRI_KEY = '2ecf1f16b9dd012c2f737d0307aac4b17fed602a3a1dfdfebb04f0a7ca89ede5'
+// etherscan api private key
+const ETHERSCAN_API_KEY = 'VGDVCY4EB8UAG4W9R9JYKV4PJCZA7MFCQP'
