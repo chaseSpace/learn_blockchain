@@ -1,6 +1,7 @@
 # 智能合约开发指南
 
 ### 目录
+
 - [1. 选择智能合约语言](#1-选择智能合约语言)
   - [1.1 Solidity](#11-solidity)
   - [1.2 Vyper](#12-vyper)
@@ -12,6 +13,14 @@
   - [2.3 Truffle](#23-Truffle)
   - [2.4 Hardhat](#24-hardhat)
   - [2.5 其他框架](#25-其他框架)
+- [3. 前端工具](#3-前端工具)
+  - [3.1 Web3.js/Ethers.js](#31-web3jsethersjs)
+  - [3.2 脚手架](#32-脚手架)
+  - [3.3 Moralis](#33-moralis)
+- [4. 钱包](#4-钱包)
+  - [4.1 小狐狸钱包（MetaMask）](#41-小狐狸钱包MetaMask)
+  - [4.2 多签钱包](#42-多签钱包)
+  - [4.3 冷钱包](#43-冷钱包)
 
 ## 前言
 
@@ -38,7 +47,8 @@ Solidity发展至今已经快十年，生态内已经有大量优秀的开发工
 
 需要注意的是，Solidity在语法设计上存在一些缺陷，当然，这些年不断的被改进，在易用性和安全性上已经得到了极大的提升。
 
-对于Solidity的学习，这里强烈推荐本仓库主页中列出的书籍 [智能合约技术与开发](https://item.jd.com/10057770151476.html) ，且在本仓库中也存放有笔者对该书的[代码笔记](./test_solidity/basic_exercises) 。
+对于Solidity的学习，这里强烈推荐本仓库主页中列出的书籍 [智能合约技术与开发](https://item.jd.com/10057770151476.html)
+，且在本仓库中也存放有笔者对该书的[代码笔记](./test_solidity/basic_exercises) 。
 
 ### 1.2 Vyper
 
@@ -99,8 +109,7 @@ Hardhat是由Nomic Labs开发的基于JavaScript的以太坊合约开发环境�
 [Hardhat官方入门教程_英文][2] 官方文档，持续更新  
 [Hardhat官方入门教程_中文译版][3] 翻译于2020年，部分信息已经过时，但不影响入门（其中在**部署到线上网络**部分提到使用ropsten测试网，但这个测试网已经下线，需要改为其他测试网，可以查看英文版获得最新步骤）
 
-[Hardhat使用模板][4] 官方提供，包含一个简单项目示例  
-
+[Hardhat使用模板][4] 官方提供，包含一个简单项目示例
 
 ### 2.5 其他框架
 
@@ -121,7 +130,9 @@ DappTools是一个专注于命令行的工具，在这里，你可以使用你�
 如果你不想学习另一种语言如 JavaScript 或 Python，希望在设置中使用尽可能少的工具，那就可以关注一下这个框架。
 
 #### 3. Foundry
+
 Foundry是Paradigm公司使用 Rust 对 DappTools 的一个重写版本，所以它也是一个以命令行为主的工具包。它主要包含三个组件：
+
 - Forge：以太坊测试框架；
 - Cast：用于与EVM智能合约交互、发送交易和获取链数据的一把瑞士军刀；
 - Anvil：本地区块链节点，类似于Ganache，Hardhat网络。
@@ -129,9 +140,45 @@ Foundry是Paradigm公司使用 Rust 对 DappTools 的一个重写版本，所以
 有了Rust的加持，Foundry对合约代码的编译性能大大优于 DappTools。
 
 ## 3. 前端工具
-TODO
+
+构建dApp需要用到前端工具，除了基本的框架如React、Vue等，还有一些web3特定的三方库供我们快速使用。
+
+### 3.1 Web3.js/Ethers.js
+
+两者都是目前流行的用以与以太坊网络交互的JS库，它们能完成的功能是差不多的，比如连接Layer1网络、查询钱包余额、监听网络变化等，对于一些更具体的介绍，推荐李留白的文章：[库对比：WEB3JS 与 ETHERSJS][8] 。
+
+### 3.2 脚手架
+
+[UseDapp][10] 和 [Drizzle][11] 是基于React的web3项目开发脚手架，提供了一些基础的插件和钩子，也比较常用。
+
+### 3.3 Moralis
+
+这个平台不仅提供了与各种区块链网络交互的不同编程语言的SDK，还同时作为一个web3基础设施存在，即提供了各种公链的Layer1网络节点服务、IPFS节点连接等等。
+
+另外，它还提供了dApp层的API，比如NFT API、DeFi API、ENS解析API等。相对于Web3.js/Ethers.js，Moralis的功能更丰富、更全面，并且免费，推荐在项目在使用。
+
+[Moralis EVM API][9]
 
 ## 4. 钱包
+
+智能合约的测试、部署与线上交互都离不开钱包，钱包不仅存储我们的账户，也是一个账户与合约连接的中间工具，我们需要根据实际情况来选择使用哪个钱包。
+
+### 4.1 小狐狸钱包（MetaMask）
+
+它是这个领域中最广泛使用的以太坊钱包，也是一款浏览器钱包，非常方便于在浏览器中测试，是每个dApp开发者都必须掌握使用的一个钱包类型。
+
+但是注意，小狐狸钱包是一个热钱包，它会一直与互联网连接，也就更容易受到网络攻击，攻击者可以通过网络窃取你的钱包私钥，你需要非常注意它的使用，**记得不要在小狐狸钱包上使用大额资金账户**。
+
+### 4.2 多签钱包
+
+小狐狸钱包属于"单签钱包"，在区块链上交易，只需要单个钱包签名即可，存在私钥泄露的**单点故障**。那多签钱包就容易理解了，它需要（多人掌握的）多个钱包提供签名才能发起一笔交易，
+安全性相对单签钱包提高不少。通常在多人掌握的账户上会使用多签钱包，比如DAO或某个组织。
+
+[多签钱包的工作原理和使用方式][12]
+
+### 4.3 冷钱包
+
+比如Ledger和Trezor，冷钱包的不同之处在于使用时比较**麻烦**，它通常是使用与网络隔离的某个硬件设备来保管私钥的，当需要使用钱包时，再通过USB/蓝牙等方式连接电脑使用，更常用来保管大额资金。
 
 ## 5. 区块链浏览器
 
@@ -144,13 +191,30 @@ TODO
 ### 6.3 DAO
 
 [0]: https://defillama.com/
+
 [1]: https://eth-brownie.readthedocs.io/en/stable/
+
 [2]: https://hardhat.org/tutorial
+
 [3]: https://learnblockchain.cn/article/1356
+
 [4]: https://github.com/NomicFoundation/hardhat-boilerplate
+
 [5]: https://github.com/chaseSpace/learn_hardhat
+
 [6]: https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU5NzUwODcyMw==&action=getalbum&album_id=1716985081560367106&scene=173&from_msgid=2247500069&from_itemidx=2&count=3&nolastread=1#wechat_redirect
+
 [7]: https://github.com/chaseSpace/learn_smartcontract
+
+[8]: https://hicoldcat.com/posts/blockchain/comparison-of-libraries-web3js-vs-ethersjs/
+
+[9]: https://docs.moralis.io/web3-data-api/evm
+
+[10]: https://github.com/EthWorks/useDApp
+
+[11]: https://trufflesuite.com/drizzle/
+
+[12]: https://learnblockchain.cn/article/4077
 
 ### 参考
 
