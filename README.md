@@ -13,6 +13,8 @@
 [B站分集_2h: 认识比特币/区块链/以太坊技术（2019）](https://www.bilibili.com/video/BV1gt411T7Tq)  
 [B站分集_19h56m：北京大学肖臻老师《区块链技术与应用》公开课（2018）](https://www.bilibili.com/video/BV1Vt411X7JF)
 
+[B站分集_2h31m：(英)用Rust构建区块链 Build a cryptocurrency!](https://www.bilibili.com/video/BV1FJ411F7ss/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=b583c6c3daa30bc8d79e9e7cc995529e)
+
 ### 1.2 书籍  
 [精通比特币-第二版（2018_经典读物）](https://book.douban.com/subject/30280401/)  
 [精通以太坊（2018_经典读物）](https://book.douban.com/subject/27161851/)  
