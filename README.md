@@ -84,7 +84,7 @@ TODO
 [以太坊技术细节（整理）_3.7w字](./ethereum_tech_detail.md)
 
 [智能合约介绍（整理）_1.4w字](./smart_contract.md)  
-[智能合约开发指南_进度40%](./smart_contract_dev_guide.md)  
+[智能合约开发指南_进度60%](./smart_contract_dev_guide.md)  
 [以太坊合约执行分析_2w字](./ethereum_execute_contract.md)  
 
 [NFT全了解_2.6w字](./nft_overview.md)  
