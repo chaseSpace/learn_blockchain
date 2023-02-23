@@ -3,25 +3,29 @@
 ### 目录
 
 - [1. 选择智能合约语言](#1-选择智能合约语言)
-  - [1.1 Solidity](#11-solidity)
-  - [1.2 Vyper](#12-vyper)
-  - [1.3 Move](#13-move)
-  - [1.4 Rust](#14-rust)
+    - [1.1 Solidity](#11-solidity)
+    - [1.2 Vyper](#12-vyper)
+    - [1.3 Move](#13-move)
+    - [1.4 Rust](#14-rust)
 - [2. 部署和测试框架](#2-部署和测试框架)
-  - [2.1 概览](#21-概览)
-  - [2.2 Remix](#22-Remix)
-  - [2.3 Truffle](#23-Truffle)
-  - [2.4 Hardhat](#24-hardhat)
-  - [2.5 其他框架](#25-其他框架)
+    - [2.1 概览](#21-概览)
+    - [2.2 Remix](#22-Remix)
+    - [2.3 Truffle](#23-Truffle)
+    - [2.4 Hardhat](#24-hardhat)
+    - [2.5 其他框架](#25-其他框架)
 - [3. 前端工具](#3-前端工具)
-  - [3.1 入门](#31-入门)
-  - [3.2 Web3.js/Ethers.js](#32-web3jsethersjs)
-  - [3.3 脚手架](#33-脚手架)
-  - [3.4 Moralis](#34-moralis)
+    - [3.1 入门](#31-入门)
+    - [3.2 Web3.js/Ethers.js](#32-web3jsethersjs)
+    - [3.3 脚手架](#33-脚手架)
+    - [3.4 Moralis](#34-moralis)
 - [4. 钱包](#4-钱包)
-  - [4.1 小狐狸钱包（MetaMask）](#41-小狐狸钱包MetaMask)
-  - [4.2 多签钱包](#42-多签钱包)
-  - [4.3 冷钱包](#43-冷钱包)
+    - [4.1 小狐狸钱包（MetaMask）](#41-小狐狸钱包MetaMask)
+    - [4.2 多签钱包](#42-多签钱包)
+    - [4.3 冷钱包](#43-冷钱包)
+- [5. 区块浏览器](#5-区块浏览器)
+- [6. 测试网与水龙头](#6-测试网与水龙头)
+- [7. Web3基础设施](#7-Web3基础设施)
+
 
 ## 前言
 
@@ -145,7 +149,9 @@ Foundry是Paradigm公司使用 Rust 对 DappTools 的一个重写版本，所以
 构建dApp需要用到前端工具，除了基本的框架如React、Vue等，还有一些web3特定的三方库供我们快速使用。
 
 ### 3.1 入门
-[create-eth-app][0] 是一个基于CLI快速开发以太坊应用的脚手架，它可以帮助我们通过一条命令初始化一个的目录结构清晰的项目环境，并且有多个前端框架（React/Vue）以及项目模板（default/Compound/aave/maker等）可选。
+
+[create-eth-app][0]
+是一个基于CLI快速开发以太坊应用的脚手架，它可以帮助我们通过一条命令初始化一个的目录结构清晰的项目环境，并且有多个前端框架（React/Vue）以及项目模板（default/Compound/aave/maker等）可选。
 是一个非常适合新手入门使用的工具，能让我们快速了解web3 app项目开发的基本架构知识。
 
 ### 3.2 Web3.js/Ethers.js
@@ -185,15 +191,28 @@ Foundry是Paradigm公司使用 Rust 对 DappTools 的一个重写版本，所以
 
 比如Ledger和Trezor，冷钱包的不同之处在于使用时比较**麻烦**，它通常是使用与网络隔离的某个硬件设备来保管私钥的，当需要使用钱包时，再通过USB/蓝牙等方式连接电脑使用，更常用来保管大额资金。
 
-## 5. 区块链浏览器
+## 5. 区块浏览器
 
-## 6. 应用领域
+区块浏览器是用来浏览主网/测试网区块链账本交易详情的网站，并且支持通过地址、交易哈希和Token等属性进行搜索。除此之外，通常也提供与合约交互（若区块链支持）的功能。
 
-### 6.1 NFT
+- [EtherScan](https://etherscan.io/) 最流行的以太坊浏览器
+- [Polygonscan](https://polygonscan.com/) Polygon链浏览器（以太坊兼容）
+- [Explorer Solana](https://explorer.solana.com/) Solana链浏览器
+- [TronScan](https://tronscan.org/#/) 波场浏览器
+- [BscScan](https://bscscan.com/) 币安智能链浏览器（以太坊兼容）
 
-### 6.2 DeFi
+## 6. 测试网与水龙头
 
-### 6.3 DAO
+几乎每个公链都有其测试网，开发者可以在其之上以几乎无成本的部署合约项目，以进行各种测试。在测试网上部署合约需要对应的原生代币，通过搜索 "**区块链名称+水龙头**"
+可以找到对应区块链测试网的水龙头网站，在水龙头网站可以免费获取用于测试网的代币。
+
+## 7. Web3基础设施
+这里指的是区块链节点公共网关、去中心化存储（IPFS）等服务，在我们部署和开发时需要用到这些服务的。好在目前市场上已经有一些公司免费提供了这些服务。
+
+- Alchemy：知名的区块链节点提供商和 API 提供商；
+- Infura：提供Layer1接入、IPFS SDK使用；
+- Moralis：包含上面这些服务，以及更加丰富的SDK，推荐；
+- QuickNode：更丰富的区块链网络类型支持；
 
 [0]: https://defillama.com/
 

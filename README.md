@@ -4,7 +4,7 @@
 - **作者**：[Leigg](https://github.com/chaseSpace)
 - **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：2023-02-23
+- **上次更新**：2023-02-24
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -61,8 +61,11 @@ TODO
 [如何节省Gas费用_更新中（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)
 
 [The Solcurity Standard][2] - [译文][3] 如何写出高质量Solidity代码  
-[SWC Registry][4] 专业的智能合约弱点分类和测试用例
+[SWC Registry][4] 专业的智能合约弱点分类和测试用例  
+[给 Web3 项目的智能合约安全指南][5]
 
+### 2.8 领域文章
+[区块链智能合约应用有哪些](https://www.yuanyuzhouneican.com/article-161517.html)
 
 ## 3. 本仓库下的文档
 
@@ -84,9 +87,8 @@ TODO
 [以太坊技术细节（整理）_3.7w字](./ethereum_tech_detail.md)
 
 [智能合约介绍（整理）_1.4w字](./smart_contract.md)  
-[智能合约开发指南_进度60%](./smart_contract_dev_guide.md)  
+[智能合约开发指南（整理）_6k字](./smart_contract_dev_guide.md)  
 [以太坊合约执行分析_2w字](./ethereum_execute_contract.md)   
-[TODO_智能合约安全审计](./smart_contract_audit.md)
 
 [NFT全了解_2.6w字](./nft_overview.md)  
 [TODO_DeFi全了解](./defi_overview.md)  
@@ -103,3 +105,4 @@ TODO
 [2]: https://github.com/transmissions11/solcurity
 [3]: https://mp.weixin.qq.com/s/fcNz4P52Ku0Ey469zqdX2A
 [4]: https://swcregistry.io/
+[5]: https://learnblockchain.cn/article/4202
