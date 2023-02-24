@@ -23,9 +23,60 @@
 ### 1.3 在线资源  
 [零知识证明学习资源汇总](https://learnblockchain.cn/2019/11/08/zkp-info)
 
-### 1.4 重要资讯  
+### 1.4 科普文章
+
+#### 比特币扩容
+- [解读闪电网络，探寻比特币支付通道的前世今生](https://news.marsbit.co/20230210125706294078.html)
+- [闪电网络发展进程：技术实现与应用前景](https://news.marsbit.co/20221021155340570531.html)
+- [Liquid 侧链与闪电网络的六大区别](https://www.btcstudy.org/2022/08/29/six-differences-between-liquid-and-lightning/)
+
+#### 比特币News
+- [2022年比特币的10大进展](https://news.marsbit.co/20221221121035896551.html)
+
+#### 区块链架构
+- [区块链中的区块链层L0、L1、L2、L3分别是什么？](https://www.51cto.com/article/717194.html)
+
+#### 模块化区块链
+- [为什么模块化区块链设计是未来?](https://foresightnews.pro/article/detail/15899)
+- [模块化区块链将带来 Web3 用户的未来？](https://foresightnews.pro/article/detail/20341)
+- [12个潜力模块化区块链项目汇总](https://news.marsbit.co/20230113105059573706.html)
+- [一文详解三大模块化区块链方案：Celestia、Dymension 与 Fuel](https://news.marsbit.co/20221201123135995808.html)
+
+#### Web3 生态
+- [万字长文：划分 Web3 生态架构的四个层级](https://www.8btc.com/article/6800520)
+
+#### 以太坊扩容
+- 链上扩容：分片
+- 链下扩容：侧链、OP系和ZK系、状态通道、Validium 和 Plasma
+- [基础篇—Cobo Ventures：深度解析六大类链下扩容方案及其应用（超长）](https://foresightnews.pro/article/detail/19834)
+- [基础篇—人人都能读懂的以太坊分片设计](https://mirror.xyz/0x8B00cEE42f226B340aF806CD7aaA4c10cc5E0154/v3ZiYXeCqHfvtDM-m9S-uHkmSUOsRRA9KReNEeWp_M8)
+- [基础篇—以太坊官网：扩容](https://ethereum.org/zh/developers/docs/scaling/)
+- [基础篇—以太坊官网：侧链](https://ethereum.org/zh/developers/docs/scaling/sidechains/)
+- [基础篇—以太坊侧链与跨链是什么意思？](https://www.528btc.com/college/160273260170283.html)
+- [基础篇—详解以太坊扩容方案：OP vs ZK Rollup](https://www.defidaonews.com/media/6756250)
+- [基础篇—Optimism VS ZK：哪种 Rollup 解决方案将更胜一筹](https://www.techflowpost.com/article/1929)
+- [基础篇—一文理解 Rollup：ZK Rollups 与 Optimistic、Arbitrum 的区别](https://www.chaincatcher.com/article/2087449)
+- [基础篇—L2：Optimism和Arbitrum的比较](https://www.ccvalue.cn/article/1400517.html)
+  - [进阶篇—ZK Rollup：以太坊扩容的未来](https://mirror.xyz/bubai.eth/CfIJX6ASjERg-MdYccN7QYf0T88Ey3fCk-F7MNLtq9I)
+  - [进阶篇—5 分钟了解 Optimism 的发展历史与未来方向](https://chainfeeds.xyz/feed/detail/d427a20e-fe6a-49f9-b9dc-48e8496f4db3)
+  - [进阶篇—Layer2 还未尘埃落定：Arbitrum 数据亮眼，ZK系着眼未来](https://www.tuoluo.cn/article/detail-10071107.html)
+  - [进阶篇—Layer2 双雄年度回顾与展望：OP 与 Arbitrum 都交出了怎样的成绩单？](https://www.ccvalue.cn/article/1407807.html)
+  
+#### 以太坊News
+- [详解以太坊最新技术路线：以 Rollup 为中心，分片或成为开发主轴](https://news.marsbit.co/20220718215520388582.html)
+- [一文解析以太坊的新路线图](https://www.tuoluo.cn/article/detail-10101056.html)
+
+#### 公链生态
+- [公链生态系统增长深度剖析](https://foresightnews.pro/article/detail/23040)
+- [公链生态纵览：浅析现有公链市场格局](https://zhuanlan.zhihu.com/p/598585397)
+- [盘点 2022 年度 60 个新公链，下一轮牛市就在其中（上）](https://foresightnews.pro/article/detail/22241)
+- [盘点 2022 年度 60 个新公链，下一轮牛市就在其中（下）](https://foresightnews.pro/article/detail/22857)
+
+### 1.5 重要资讯  
 [2022-12-16_Aztec 筹集 1 亿美元用于构建加密以太坊（涉及隐私交易、压缩交易等技术）](https://news.marsbit.cc/20221216092927524453.html)  
 [2022-11-17_2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？（HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%）](https://www.8btc.com/article/6788632)
+
+
 
 ## 2. 智能合约开发
 ### 2.1 书籍  
