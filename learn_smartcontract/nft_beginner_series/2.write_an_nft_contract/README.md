@@ -66,7 +66,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract NFTCollectible is ERC721Enumerable, Ownable {
+contract NFTCollectible is ERC72
+1Enumerable, Ownable {
     using SafeMath for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -420,7 +421,7 @@ Error in plugin @nomiclabs/hardhat-etherscan: Failed to send contract verificati
 Endpoint URL: https://api-goerli.etherscan.io/api
 Reason: Connect Timeout Error
 ```
-经过认真读完 [这个仓库的discussion中几位同胞们的讨论][3] 后，笔者得知此错误主要是因为`https://api-goerli.etherscan.io/api` 在国内存在DNS污染问题，有两个解决方案：
+经过认真读完 [这个仓库的discussion中几位同胞们的讨论][3] 后，笔者得知此错误主要是因为`https://api-goerli.etherscan.io/api` 在国内存在DNS污染问题，有四个解决方案：
 1. 修改hosts文件（实测不行，因为查询到URL的IP也是需要翻墙的）
 2. 开启VPN软件clash的增强模式
 3. 在`hardhat.config.js`自定义api url（请参考上述链接）
