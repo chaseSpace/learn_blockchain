@@ -4,7 +4,7 @@
 - **作者**：[Leigg](https://github.com/chaseSpace)
 - **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：2023-02-24
+- **上次更新**：2023-02-25
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -91,17 +91,13 @@
 
 ### 2.4 NFT系列
 
-- **手把手教程**
-    - [NFT新手教程（本仓库）](./learn_smartcontract/nft_beginner_series)
+[NFT新手教程（本仓库）](./learn_smartcontract/nft_beginner_series)  
+[学习知名的NFT项目（本仓库）](./learn_smartcontract/other/learn_famous_project_code.md)
 
 
-- **学习知名的NFT项目**
-    - [点此查看（本仓库）](./learn_smartcontract/other/learn_famous_project_code.md)
+[如何节省Gas开销（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)  
+[如何使用OpenZeppelin编写可升级合约（本仓库整理）](./learn_smartcontract/other/how_to_upgrade_contract.md)
 
-
-- **NFT编程技巧**
-    - [如何节省Gas开销（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)
-    - [如何使用OpenZeppelin编写可升级合约（本仓库整理）](./learn_smartcontract/other/how_to_upgrade_contract.md)
 ### 2.5 DeFi系列
 TODO
 
