@@ -39,6 +39,9 @@
 
 ### 1.4 科普文章
 
+#### 入行指导
+[How to Become a Blockchain Engineer ⭐️⭐️⭐⭐️️](https://betterprogramming.pub/how-to-become-a-blockchain-engineer-fa4386a0504f)
+
 #### 比特币扩容
 - [解读闪电网络，探寻比特币支付通道的前世今生](https://news.marsbit.co/20230210125706294078.html)
 - [闪电网络发展进程：技术实现与应用前景](https://news.marsbit.co/20221021155340570531.html)
