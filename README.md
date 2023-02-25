@@ -13,7 +13,12 @@
 [B站分集_2h: 认识比特币/区块链/以太坊技术（2019）](https://www.bilibili.com/video/BV1gt411T7Tq)  
 [B站分集_19h56m：北京大学肖臻老师《区块链技术与应用》公开课（2018）](https://www.bilibili.com/video/BV1Vt411X7JF)
 
-[B站分集_2h31m：(英)用Rust构建区块链 Build a cryptocurrency!](https://www.bilibili.com/video/BV1FJ411F7ss/?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click&vd_source=b583c6c3daa30bc8d79e9e7cc995529e)
+#### With Golang
+[Youtube分集_2h48m：Building a Blockchain in Golang](https://www.youtube.com/playlist?list=PLpP5MQvVi4PGmNYGEsShrlvuE2B33xV1L)
+
+#### With Rust
+[Youtube分集_2h30m：Build a cryptocurrency! - Blockchain in Rust](https://www.youtube.com/watch?v=vJdT05zl6jk)  
+[Youtube分集_2h22m：Build a Bitcoin-like Blockchain with Substrate - Beginner Friendly](https://www.youtube.com/playlist?list=PLp0_ueXY_enXeTURZk2frt7muxf2Hz6sN)
 
 ### 1.2 书籍  
 [精通比特币-第二版（2018_经典读物）](https://book.douban.com/subject/30280401/)  
@@ -22,6 +27,15 @@
 
 ### 1.3 在线资源  
 [零知识证明学习资源汇总](https://learnblockchain.cn/2019/11/08/zkp-info)
+
+#### With Rust
+[List Of Top Blockchains Using The Rust Programming Language](https://101blockchains.com/top-blockchains-using-rust-programming-language/)
+
+[文章：Mario Zupan_How to build a blockchain in Rust](https://blog.logrocket.com/how-to-build-a-blockchain-in-rust/)  
+[文章：Mario Zupan_Substrate blockchain development: Core concepts](https://blog.logrocket.com/substrate-blockchain-framework-core-concepts/)  
+[文章：Mario Zupan_How to build a custom blockchain implementation in Rust using Substrate](https://blog.logrocket.com/custom-blockchain-implementation-rust-substrate/)
+
+
 
 ### 1.4 科普文章
 
@@ -76,20 +90,30 @@
 [2022-12-16_Aztec 筹集 1 亿美元用于构建加密以太坊（涉及隐私交易、压缩交易等技术）](https://news.marsbit.cc/20221216092927524453.html)  
 [2022-11-17_2022企业级区块链现状：上市公司Top100都在使用哪些区块链平台？（HyperLedgerFabric占比26%，以太坊占比18%，Quorum占比11%）](https://www.8btc.com/article/6788632)
 
+## 2. 钱包开发
 
+### 2.1 在线资源
+[Go Ethereum Book](https://goethereumbook.org/client/)
 
-## 2. 智能合约开发
-### 2.1 书籍  
+### 2.2 科普文章
+[以太坊钱包开发基础知识](https://www.bcskill.com/index.php/archives/1133.html)  
+[Ethereum wallets: A beginner’s guide to storing ETH](https://cointelegraph.com/ethereum-for-beginners/ethereum-wallets-a-beginners-guide-to-storing-eth)  
+[技术指南：理解开发HD 钱包涉及的 BIP32、BIP44、BIP39](https://www.8btc.com/article/334792)
+
+## 3. 智能合约开发
+### 3.1 书籍  
 [智能合约技术与开发](https://item.jd.com/10057770151476.html) 本仓库下的 [basic_exercises](./test_solidity/basic_exercises) 系列代码与《智能合约技术与开发》书籍第三、四章的内容排序基本一致，可作为参考。
 
-### 2.2 在线资源
+### 3.2 在线资源
 [WTF学院](https://wtf.academy/) 在2023年1月受到以太坊基金会资助的Web3在线免费教育网站，十分推荐！  
 [Solidity by Example](https://solidity-by-example.org/) 包含Solidity特性、漏洞以及应用（DeFi）简明教学，推荐！
 
-### 2.3 ERC系列示例
+[Repo：以太坊开发者工具列表](https://github.com/ConsenSys/ethereum-developer-tools-list/blob/master/README_Chinese.md)
+
+### 3.3 ERC系列示例
 [通过USDT学习ERC-20（本仓库）](./learn_smartcontract/nft_series/erc20_example.md)
 
-### 2.4 NFT系列
+### 3.4 NFT系列
 
 [NFT新手教程（本仓库）](./learn_smartcontract/nft_beginner_series)  
 [学习知名的NFT项目（本仓库）](./learn_smartcontract/other/learn_famous_project_code.md)
@@ -98,13 +122,13 @@
 [如何节省Gas开销（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)  
 [如何使用OpenZeppelin编写可升级合约（本仓库整理）](./learn_smartcontract/other/how_to_upgrade_contract.md)
 
-### 2.5 DeFi系列
+### 3.5 DeFi系列
 TODO
 
-### 2.6 DAO系列
+### 3.6 DAO系列
 TODO
 
-### 2.7 合约编程建议
+### 3.7 合约编程建议
 [合约的安全编程（本仓库）](./learn_smartcontract/other/security_coding.md)  
 [合约的技巧性编程（本仓库）](./learn_smartcontract/other/skilled_coding.md)  
 [如何节省Gas费用_更新中（本仓库）](./learn_smartcontract/nft_series/saving_gas_coding.md)
@@ -113,10 +137,10 @@ TODO
 [SWC Registry][4] 专业的智能合约弱点分类和测试用例  
 [给 Web3 项目的智能合约安全指南][5]
 
-### 2.8 领域文章
+### 3.8 领域文章
 [区块链智能合约应用有哪些](https://www.yuanyuzhouneican.com/article-161517.html)
 
-## 3. 本仓库下的文档
+## 4. 本仓库下的文档
 
 每篇文档的字数都不少，请读者根据兴趣和时间安排选择阅读~
 
