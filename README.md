@@ -4,7 +4,7 @@
 - **作者**：[Leigg](https://github.com/chaseSpace)
 - **维护状态**：持续更新中
 - **开始于**：2022-10-27
-- **上次更新**：2023-02-25
+- **上次更新**：2023-02-26
 - **目标**：汇集区块链领域的大部分学习资源，或整理，或引用，或原创。
 
 ## 1. 区块链开发
@@ -21,8 +21,8 @@
 - [Youtube分集_2h22m：Build a Bitcoin-like Blockchain with Substrate - Beginner Friendly](https://www.youtube.com/playlist?list=PLp0_ueXY_enXeTURZk2frt7muxf2Hz6sN)
 
 ### 1.2 书籍  
-- [精通比特币-第二版（2018_经典读物）](https://book.douban.com/subject/30280401/)  
-- [精通以太坊（2018_经典读物）](https://book.douban.com/subject/27161851/)  
+- [精通比特币-第二版（2018_经典读物）](https://book.douban.com/subject/30280401/) - [在线中文阅读](https://github.com/inoutcode/bitcoin_book_2nd)
+- [精通以太坊（2018_经典读物）](https://book.douban.com/subject/27161851/) - [在线中文阅读](https://github.com/inoutcode/ethereum_book)  
 - [区块链技术开发指南-马兆丰（2020_偏向技术原理&开发）](https://baike.baidu.com/item/区块链技术开发指南/56688853?fr=aladdin)
 
 ### 1.3 在线资源  
