@@ -129,7 +129,7 @@ contract NFTCollectible is ERC721, Ownable {
 
 为此，Azuki团队推出了ERC721（以及其扩展）的优化版本 [ERC721A][2]，该团队给出了与ERC721Enumerable铸币费用的对比，如下图：
 
-<img src="./images/erc721a_mint_fee_cmp.jpg" width="476" height="266">
+<img src="../other/images/erc721a_mint_fee_cmp.jpg" width="476" height="266">
 
 下面是对ERC721A的简介：
 - 完全实现了IERC721、IERC165、IERC721Metadata
